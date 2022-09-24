@@ -1,0 +1,174 @@
+\documentclass[12pt]{book}
+
+\title{Analysis II}
+\author{Fall Semester\\MATH201}
+\date{}
+\usepackage{indentfirst}
+\usepackage{kotex}
+\usepackage{amssymb, amsthm, amsfonts, graphics, epsfig, fancyhdr, bm, mathrsfs, thmtools, hyperref, amsmath, inputenc}
+\usepackage[shortlabels]{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\setlength{\headheight}{28pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Ch6. Integration}
+\fancyfoot[C]{\thepage}
+
+\setcounter{chapter}{5}
+\setlength\parindent{12pt}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remarks}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{exe}{Exercise}
+\newtheorem{sect}{Sec}
+
+\usepackage{chngcntr}
+\counterwithin{theorem}{chapter}
+
+\def\upint{\mathchoice%
+	{\mkern13mu\overline{\vphantom{\intop}\mkern7mu}\mkern-20mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	\int}
+\def\lowint{\mkern3mu\underline{\vphantom{\intop}\mkern7mu}\mkern-10mu\int}
+
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\thesect}{2.\arabic{sect}}
+\renewcommand{\qedsymbol}{}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\begin{document}
+	\chapter{The Riemann-Stieltjes Integral\\Selected Exercise}
+	\listoftheorems[title = List of Exercise]
+	\newpage
+	\begin{exe}
+		Suppose $\alpha$ increases on $[a,\,b]$, $a\leq x_0 \leq b$, $\alpha$ is countinuous at $x_0$, $f(x_0)=1$, and $f(x)=0$ if $x\neq x_0$. Prove that $f\in\mathscr{R}(\alpha)$ and that $\int f d\alpha=0$.
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Suppose $f\geq 0$, $f$ is countinuous on $[a,\,b]$, and $\displaystyle\int_{a}^{b} f(x)\,dx=0$. Prove that $f(x)=0$ for all $x\in[a,\,b]$. (Compare this with \textbf{Exercise 1}.)
+	\end{exe}
+	\begin{proof}	
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Define three functions $\beta_1$, $\beta_2$, $\beta_3$ as follows: $\beta_j(x)=0$ if $x<0$, $\beta_j(x)=1$ if $x>0$ for $j=1$, $2$, $3$; and $\beta_1(0)=0$, $\beta_2(0)=1$, $\beta_3(0)=\dfrac{1}{2}$. Let $f$ be a bounded function on $[-1,\,1]$.
+		\begin{enumerate}[(a)]
+			\item Prove that $f\in\mathscr{R}(\beta_1)$ if and only if $f(0+)=f(0)$ and that then \begin{equation*}
+				\int f\,d\beta_1=f(0).
+			\end{equation*}
+			\item State and prove a similiar result for $\beta_2$.
+			\item Prove that $f\in\mathscr{R}(\beta_3)$ if and only if $f$ is continuous at $0$.
+			\item If $f$ is continuous at $0$, prove that \begin{equation*}
+				\int f\,d\beta_1=\int f\,d\beta_2=\int f\,d\beta_3=f(0).
+			\end{equation*}
+		\end{enumerate}
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		If $f(x)=0$ for all irrational $x$, $f(x)=1$ for all rational $x$, prove that $f\notin \mathscr{R}$ on $[a,\,b]$ for any $a<b$.
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Suppose $f$ is a bounded real function on $[a,\,b]$, and $f^2\in\mathscr{R}$ on $[a,\,b]$. Does it follow that $f\in\mathscr{R}$? Does the answer change if we assume that $f^3\in\mathscr{R}$?
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Let $P$ be the Cantor set constructed in \textbf{Sec. 2.44}. Let $f$ be a bounded real function on $[0,\,1]$ which is continuous at every point outside $P$. Prove that $f\in\mathscr{R}$ on $[0,\,1]$.
+		\\$Hint:$ $P$ can be covered be finitely many segments whose total length can be made as small as desired. Proceed as in \textbf{Theroem 6.10}.
+	\end{exe}
+	\setcounter{sect}{43}
+	\begin{sect}[The Cantor set]
+		The set which we are now going to construct shows that there exist perfect sets in $R^1$ which contain no segment.\\
+		Let $E_0$ be the intrval $[0,\,1]$. Remove the segment $(\frac{1}{3},\,\frac{2}{3})$, and let $E_1$ be the union of the intervals \begin{equation*}
+			\left[0,\,\frac{1}{3}\right]\quad \left[\frac{2}{3},\,1\right]
+		\end{equation*}
+		Remove the middle thirds of these intervals, and let $E_2$ be the union of the intervals $$\left[0,\,\frac{1}{9}\right]\quad \left[\frac{2}{9},\,\frac{3}{9}\right]\quad \left[\frac{6}{9},\,\frac{7}{9}\right]\quad \left[\frac{8}{9},\,1\right]$$
+		Continuing in this way, we obtain a sequence of compact sets $E_n$, such that
+		\begin{enumerate}[(a)]
+			\item $E_1\supset E_2\supset E_3\supset\cdots$;
+			\item $E_n$ is the union of $2^n$ intervals, each of length $3^{-n}$.
+		\end{enumerate}
+		The set $$P=\displaystyle\bigcap_{n=1}^\infty E_n$$ is called the $Cantor\, set$. $P$ is clearly compact, and $P$ is not empty.
+	\end{sect}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{proof}(Continued...)
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Suppose $f$ is a real function on $(0,\,1]$ and $f\in\mathscr{R}$ on $[c,\,1]$ for every $c>0$. Define 
+		\begin{equation*}
+			\int_{0}^1 f(x) dx=\lim_{c\rightarrow 0} \int_{c}^{1} f(x) dx
+		\end{equation*}
+		if this limit exists (and is finite).
+		\begin{enumerate}[(a)]
+			\item If $f\in\mathscr{R}$ on $[0,\,1]$, show that this definition of the integral agrees with the old one.
+			\item Construct a function $f$ such that the above limit exists, although it fails to exist with $|f|$ in place of $f$.
+		\end{enumerate}
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Suppose $f\in\mathscr{R}$ on $[a,\,b]$ for every $b>a$ where $a$ is fixed. Define
+		\begin{equation*}
+			\int_{a}^\infty f(x) dx=\lim_{b\rightarrow \infty} \int_{a}^b f(x) dx
+		\end{equation*}
+		if the limit exists (and is finite). In that case, we say that the integral on the left $converges$. If it also converges after $f$ has been replaced by $|f|$, it is said to converge $absolutely$.\\
+		Assume that $f(x)\geq0$ and that $f$ decreases monotonically on $[1,\,\infty)$. Prove that $$\int_{1}^\infty f(x) dx$$ converges if and only if $$\displaystyle\sum_{n=1}^\infty f(n)$$ converges. (This is the so-called ``integral test" for convergence of series.)
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Show that integration by parts can sometimes be applied to the ``improper'' integrals defined in \textbf{Exercise 7} and \textbf{Exercise 8}. (State appropriate hypotheses, formulate a theorem, and prove it!) For instance show that $$\int_0^\infty \dfrac{\cos x}{1+x}dx=\int_0^\infty \dfrac{\sin x}{(1+x)^2}dx.$$
+		Show that one of these integrals converges absolutely, but that the other does not.
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Let $p$ and $q$ be positive real numbers such that $$\dfrac{1}{p}+\dfrac{1}{q}=1.$$ Prove the following statements.
+		\begin{enumerate}[(a)]
+			\item If $u\geq0$ and $v\geq0$, then $$uv\leq \dfrac{u^p}{p}+\dfrac{v^q}{q}.$$ Equality holds if and only if $u^p=v^q$.
+			\item If $f\in\mathscr{R}(\alpha)$, $g\in\mathscr{R}(\alpha)$, $f\geq 0$, $g\geq 0$, and $$\int_a^b f^p d\alpha =1=\int_a ^b g^q d\alpha,$$ then $$\int_a^b fg\,d\alpha\leq 1.$$
+			\item If $f$ and $g$ are complex functions in $\mathscr{R}(\alpha)$, then $$\left\vert \int_a^b fg\,d\alpha\right\vert\leq\left\{\int_a^b |f|^p\,d\alpha\right\}^{1/p}\left\{\int_a^b |g|^q\,d\alpha\right\}^{1/q}.$$ This is $H\ddot{o}lder's~inequality$. When $p=q=2$ it is usually called the $Schwarz~inequality$.
+			\item Show that $H\ddot{o}lder's~inequality$ is also true for the ``improper'' integrals described in \textbf{Exercise 7} and \textbf{Exercise 8}.
+		\end{enumerate}
+	\end{exe}
+	\newpage
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Let $\alpha$ be a fixed increasing function on $[a,\,b]$. For $u\in\mathscr{R}(\alpha)$, define $$\Vert u\Vert_2=\left\{\int_a^b |u|^2\,d\alpha\right\}^{1/2}.$$ Suppose $f$, $g$, $h\in\mathscr{R}(\alpha)$, and prove the triangle inequality $$\Vert f-h\Vert_2\leq\Vert f-g\Vert_2+\Vert g-h\Vert_2$$ as a consequence of the $Schwarz~inequality$, as in the proof of \textbf{Theorem 1.37.}
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\setcounter{exe}{16}
+	\begin{exe}
+		Suppose $\alpha$ increases monotonically on $[a,\,b]$, $g$ is continuous, and $g(x)=G\,'(x)$ for $a\leq x \leq b$. Prove that $$\int_a^b \alpha(x)g(x)\,dx=G(b)\alpha(b)-G(a)\alpha(a)-\int_a^b G\,d\alpha.$$
+		$Hint:$ Take $g$ real, without loss of generality. Given $P=\left\{x_0,\,x_1,\,\ldots,\,x_n\right\}$, choose $t_i\in(x_{i-1},\,x_i)$ so that $g(t_i)\Delta x_i=G(x_i)-G(x_{i-1}).$ Show that $$\sum_{i=1}^n\alpha(x_i)g(t_i)\Delta x_i=G(b)\alpha(b)-G(a)\alpha(a)-\sum_{i=1}^n G(x_{i-1})\Delta\alpha_i.$$
+	\end{exe}
+\end{document}
