@@ -1,0 +1,492 @@
+\documentclass[12pt]{book}
+
+\title{Linear Algebra II}
+\author{Fall Semester\\MATH201}
+\date{}
+
+\usepackage{indentfirst}
+\usepackage{kotex}
+\usepackage{amsmath, amssymb, amsthm, amsfonts, graphics, epsfig, fancyhdr, bm, hyperref, thmtools, mathtools}
+\usepackage{tikz-cd}
+\usepackage[shortlabels]{enumitem}
+\setlength{\headheight}{28pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Diagonalizability}
+\fancyfoot[C]{\thepage}
+
+\setlength\parindent{12pt}
+\theoremstyle{definition}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remarks}
+\newtheorem{problem}{Problem}
+\newtheorem*{definition}{Definition}
+\setcounter{tocdepth}{3}
+\allowbreak
+
+\usepackage{chngcntr}
+\makeatletter
+% section from book
+%\newcommand\section{\@startsection {section}{1}{\z@}%
+	%                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+	%                                   {2.3ex \@plus.2ex}%
+	%                                   {\normalfont\Large\bfseries}}
+\renewcommand\chapter{\@startsection {chapter}{0}{\z@}%
+	{-4.5ex \@plus -1ex \@minus -.2ex}%
+	{3.3ex \@plus.2ex}%
+	{\normalfont\LARGE\bfseries}}
+\makeatletter
+
+\counterwithin{problem}{chapter}
+\renewcommand\thechapter{5.\arabic{chapter}}
+\renewcommand\thetheorem{5.\arabic{theorem}}
+\renewcommand\theproblem{\arabic{problem}}
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\qedsymbol}{\ensuremath{}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\begin{document}
+	\setcounter{chapter}{1}
+	\listoftheorems[title = Contents]
+	\newpage
+	\chapter{Diagonalizability}
+	\begin{problem}
+		For each of following matrices $A\in\mathsf{M}_{n\times n}(R)$, test $A$ for diagonalizability, and if $A$ is diagonalizable, find an invertible matrix $Q$ and a diagonal matrix $D$ such that $Q^{-1}AQ=D$.
+		\begin{enumerate} [(a)]
+			\item $\begin{pmatrix}
+				1&2\\0&1
+			\end{pmatrix}$
+			\item $\begin{pmatrix}
+				1&3\\3&1
+			\end{pmatrix}$
+			\item $\begin{pmatrix}
+				1&4\\3&2
+			\end{pmatrix}$
+			\item $\begin{pmatrix}
+				7&-4&0\\8&-5&0\\6&-6&3
+			\end{pmatrix}$
+			\item $\begin{pmatrix*}[r]
+				0&0&1\\1&0&-1\\0&1&1
+			\end{pmatrix*}$
+			\item $\begin{pmatrix}
+				1&1&0\\0&1&2\\0&0&3
+			\end{pmatrix}$
+			\item $\begin{pmatrix*}[r]
+				3&1&1\\2&4&2\\-1&-1&1
+			\end{pmatrix*}$
+		\end{enumerate}
+	\end{problem}
+	\newpage
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		For each of the following linear operator $\mathsf{T}$ on a vector space $\mathsf{V}$, test $\mathsf{T}$ for diagonalizability, and if $\mathsf{T}$ is diagonalizable, find a basis $\beta$ for $\mathsf{V}$ such that $[\mathsf{T}]_{\beta}$ is a diagonal matrix.
+		\begin{enumerate}[(a)]
+			\item $\mathsf{V}=\mathsf{P}_3(R)$ and $\mathsf{T}$ is defined by $\mathsf{T}(f(x))=f\ '(x)+f\ ''(x)$, respectively.
+			\item $\mathsf{V}=\mathsf{P}_2(R)$ and $\mathsf{T}$ is defined by $\mathsf{T}(ax^2+bx+c)=cx^2+bx+a$.
+			\item $\mathsf{V}=\mathsf{R}^3$ and $\mathsf{T}$ is defined by$$\mathsf{T}\begin{pmatrix}
+				a_1\\a_2\\a_3
+			\end{pmatrix}=\begin{pmatrix*}[r]
+			a_2\\-a_1\\2a_3
+		\end{pmatrix*}.$$
+			\item $\mathsf{V}=\mathsf{P}_2(R)$ and $\mathsf{T}$ is defined by $\mathsf{T}(f(x))=f(0)+f(1)(x+x^2)$.
+			\item $\mathsf{V}=\mathsf{C}^2$ and $\mathsf{T}$ is defined by $\mathsf{T}(z,~w)=(z+iw,~iz+w)$.
+			\item $\mathsf{V}=\mathsf{M}_{2\times 2}(R)$ and $\mathsf{T}$ is defined by $\mathsf{T}(A)=A^T$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Prove the matrix version of corollary to \textbf{Theorem 5.5}: If $A\in\mathsf{M}_{n\times n}(F)$ has $n$ distinct eigenvalues, then $A$ is diagonalizable.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		State and prove the matrix version of \textbf{Theorem 5.6}
+	\end{problem}
+	\setcounter{theorem}{5}
+	\begin{theorem}
+		The characteristic polynomial of any diagonalizable linear operator splits.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}$\mathit{ }$
+		\begin{enumerate}[(a)]
+			\item Justify the test for diagonalizability and the method for diagonalization stated in this section.
+			\item Formulate the results in (a) for matrices.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		For $$A=\begin{pmatrix}
+			1&4\\2&3
+		\end{pmatrix}\in\mathsf{M}_{2\times 2}(R),$$
+		find an expression for $A^n$, where $n$ is an arbitrary positive integer.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Suppose that $A\in\mathsf{M}_{n\times n}(F)$ has two distinct eigenvalues, $\lambda_1$ and $\lambda_2$, and that $\dim(\mathsf{E}_{\lambda_1})=n-1.$ Prove that $A$ is diagonalizable.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$, and suppose there exists an ordered basis $\beta$ for $\mathsf{V}$ such that $[\mathsf{T}]_\beta$ is an upper triangular matrix
+		\begin{enumerate}[(a)]
+			\item Prove that the characteristic polynomial for $\mathsf{T}$ splits.
+			\item State and prove an analogous result ofr matrices.
+		\end{enumerate}
+		The converse of (a) is treated in \textbf{Problem 32} of \textbf{Section 5.4.}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$ with the distinct eigenvalues $\lambda_1$, $\lambda_2$, $\ldots$, $\lambda_k$ and corresponding multiplicities $m_1$, $m_2$, $\ldots$, $m_k$. Suppose that $\beta$ is a basis for $\mathsf{V}$ such that $[\mathsf{T}]_\beta$ is an upper triangular matrix. Prove that the diagonal entries of $[\mathsf{T}]_\beta$ are $\lambda_1$, $\lambda_2$, $\ldots$, $\lambda_k$ and that each $\lambda_i$ occurs $m_i$ times $(1\leq i \leq k).$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A$ be an $n\times n$ matrix that is similar to an upper triangular matrix and has the distinct eigenvalues $\lambda_1$, $\lambda_2$, $\ldots$, $\lambda_k$ with corresponding multiplicities $m_1$, $m_2$, $\ldots$, $m_k$. Prove the following statements.
+		\begin{enumerate}[(a)]
+			\item $\text{tr}(A)=\displaystyle\sum_{i=1}^k m_i\lambda_i$
+			\item $\det(A)=(\lambda_1)^{m_1}(\lambda_2)^{m_2}\cdots(\lambda_k)^{m_k}.$
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be an invertible linear operator on a finite-dimensional vector space $\mathsf{V}$.
+		\begin{enumerate}[(a)]
+			\item Recall that for any eigenvalue $\lambda$ of $\mathsf{T}$, $\lambda^{-1}$ is an eigenvalue of $\mathsf{T}^{-1}$(\textbf{Exericse 8} of \textbf{Section 5.1}). Prove that the eigenspace of $\mathsf{T}$ corresponding to $\lambda$ is the same as the eigenspace of $\mathsf{T}^{-1}$ corresponding to $\lambda^{-1}$.
+			\item Prove that if $\mathsf{T}$ is diagonalizable, then $\mathsf{T}^{-1}$ is diagonalizable.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A\in\mathsf{T}_{n\times n}(F)$. Recall form \textbf{Problem 14} of \textbf{Section 5.1} that $A$ and $A^T$ have the same characteristic polynomial and hence share the same eigenvalues with the same multiplicities. For any eigenvalue $\lambda$ of $A$ and $A^T$, let $\mathsf{E}_\lambda$ and $\mathsf{E'}_\lambda$ denote the corresponding eigenspaces for $A$ and $A^T$, respectively.
+		\begin{enumerate}[(a)]
+			\item Show by way of example that for a given common eigenvalue, these two eigenspaces need not be the same.
+			\item Prove that for any eigenvalue $\lambda$, $\dim(\mathsf{E}_\lambda)=\dim(\mathsf{E'}_{\lambda})$.
+			\item Prove that if $A$ is diagonalizable, then $A^T$ is also diagonalizble.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\setcounter{problem}{19}
+	\begin{problem}
+		Let $\mathsf{W}_1$, $\mathsf{W}_2$, $\ldots$, $\mathsf{W}_k$ be subspaces of a finite-dimensional vector space $\mathsf{V}$ such that
+		$$\displaystyle\sum_{i=1}^k \mathsf{W}_i=\mathsf{V}.$$
+		Prove that $\mathsf{V}$ is the direct sum of $\mathsf{W}_1$, $\mathsf{W}_2$, $\ldots$, $\mathsf{W}_k$ if and only if
+		$$\dim(\mathsf{V})=\displaystyle\sum_{i=1}^k\dim(\mathsf{W}_i).$$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{V}$ be a finite-dimensional vector space with a basis $\beta$, anad let $\beta_1$, $\beta_2$, $\ldots$, $\beta_k$ be a partition of $\beta$ ($i.e.$, $\beta_1$, $\beta_2$, $\ldots$, $\beta_k$ are subsets of $\beta$ such that $\beta=\beta_1\cup\beta_2\cup\cdots\cup\beta_k$ and $\beta_i\cap\beta_j=\varnothing$ if $i\neq j$). Prove that $\mathsf{V}=\text{span}(\beta_1)\oplus\text{span}(\beta_2)\oplus\cdots\oplus\text{span}(\beta_k)$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$, and suppose that the distinct eigenvalues of $\mathsf{T}$ are $\lambda_1$, $\lambda_2$, $\ldots$, $\lambda_k$. Prove that $$\text{span}\left(\left\{x\in\mathsf{V}\,:\,x\text{ is an eigenvector of }\mathsf{T}\right\}\right)=\mathsf{E}_{\lambda_1}\oplus\mathsf{E}_{\lambda_2}\oplus\cdots\oplus\mathsf{E}_{\lambda_k}.$$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage	
+	\begin{problem}
+		Let $\mathsf{W}_1$, $\mathsf{W}_2$, $\mathsf{K}_1$, $|mathsf{K}_2$, $\ldots$, $\mathsf{K}_p$, $\mathsf{M}_1$, $\mathsf{M}_2$, $\ldots$, $\mathsf{M}_q$ be subspaces of a vector space $\mathsf{V}$ such that $\mathsf{W}_1=\mathsf{K}_1\oplus\mathsf{K}_2\oplus\cdots\oplus\mathsf{K}_p$ and $\mathsf{W}_2=\mathsf{M}_1\oplus\mathsf{M}_2\oplus\cdots\oplus\mathsf{M}_q$. Prove that if $\mathsf{W}_1\cap\mathsf{W}_2=\left\{\mathit{0}\right\}$, then$$\mathsf{W}_1+\mathsf{W}_2=\mathsf{W}_1\oplus\mathsf{W}_2=\mathsf{K}_1\oplus\mathsf{K}_2\cdots\oplus\mathsf{K}_p\oplus\mathsf{M}_1\oplus\mathsf{M}_2\oplus\cdots\oplus\mathsf{M}_q.$$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\setcounter{chapter}{5}
+	\newpage
+	\chapter{Invariant subspaces and the Cayley–Hamilton Theorem}
+	\setcounter{problem}{1}
+	\begin{problem}
+		For each of the following linear operatos $\mathsf{T}$ on the vector space $\mathsf{V}$, determine whether the given subspace $\mathsf{W}$ ia a $\mathsf{T}$-invariant subspace of $\mathsf{V}$.
+		\begin{enumerate}[(a)]
+			\item $\mathsf{V}=\mathsf{P}_3(R)$, $\mathsf{T}(f(x))=f\,'(x)$, and $\mathsf{W}=\mathsf{P}_2(R)$
+			\item $\mathsf{V}=\mathsf{P}(R)$, $\mathsf{T}(f(x))=xf(x)$, and $\mathsf{W}=\mathsf{P}_2(R)$
+			\item $\mathsf{V}=\mathsf{R}^3$, $\mathsf{T}(a,~b,~c)=(a+b+c,~a+b+c,~a+b+c)$, and $\mathsf{W}=\left\{\left(t,~t,~t\right)\,:\,t\in R\right\}$
+			\item $\mathsf{V}=\mathsf{C}([0,~1])$, $\mathsf{T}(f(t))=\left[\int_{0}^{1}f(x)dx\right]t$, and\\ $\mathsf{W}=\left\{f\in\mathsf{V}\,:\,f(t)=at+b\text{ for some } a\text{ and }b\right\}$
+			\item $\mathsf{V}=\mathsf{M}_{2\times 2}(R)$, $\mathsf{T}(A)=\begin{pmatrix}
+				0&1\\1&0
+			\end{pmatrix}A$, and $\mathsf{W}=\left\{A\in\mathsf{V}\,:\,A^T=A\right\}$
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$, Prove that the following subspaces are $\mathsf{T}$-invarinat.
+		\begin{enumerate}[(a)]
+			\item $\left\{\mathit{0}\right\}$ and $\mathsf{V}$
+			\item $\mathsf{N}(\mathsf{T})$ and $\mathsf{R}(\mathsf{T})$.
+			\item $\mathsf{E}_\lambda$, for any eigenvalue $\lambda$ of $\mathsf{T}$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$, and let $\mathsf{W}$ be a $\mathsf{T}$-invariant subspace of $\mathsf{V}$. Prove that $\mathsf{W}$ is $g(\mathsf{T})$-invariant for any polynomail $g(t)$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$. Prove that the intersection of any collection of $\mathsf{T}$-invariant subspaces of $\mathsf{V}$ is a $\mathsf{T}$-invariant subspace of $\mathsf{V}$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		For each linear operator $\mathsf{T}$ on the vector space $\mathsf{V}$, find an ordered basis for the $\mathsf{T}$-cyclic subspace generated by the vector $z$.
+		\begin{enumerate}[(a)]
+			\item $\mathsf{V}=\mathsf{R}^4$, $\mathsf{T}(a,~b,~c,~d)=(a+b,~b-c,~a+c,~a+d)$, and $z=e_1$.
+			\item $\mathsf{V}=\mathsf{P}_3(R)$, $\mathsf{T}(f(x))=f\,''(x)$, and $z=x^3$.
+			\item $\mathsf{V}=\mathsf{M}_{2\times 2}(R)$, $\mathsf{T}(A)=A^T$, and $z=\begin{pmatrix}
+				0&1\\1&0
+			\end{pmatrix}$.
+			\item $\mathsf{V}=\mathsf{M}_{2\times 2}(R)$, $\mathsf{T}(A)=\begin{pmatrix}
+				1&1\\2&2
+			\end{pmatrix}A$, and $z=\begin{pmatrix}
+			0&1\\1&0
+		\end{pmatrix}$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Prove that the restriction of a linear operator $\mathsf{T}$ to a $\mathsf{T}$-invariant subspace is a linear operator on that subspace.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be alinear operator on a vector space with a $\mathsf{T}$-invariant subspace $\mathsf{W}$. Prove that if $v$ is an eigenvector of $\mathsf{T}_\mathsf{W}$ with corresponding eigenvalue $\lambda$, then the same is true for $\mathsf{T}$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		For each linear operator $\mathsf{T}$ and cyclic subspace $\mathsf{W}$ in \textbf{Problem 6}, compute the characteristic polynomial of $\mathsf{T}_\mathsf{W}$ in two ways, as in \textbf{Example 6}.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage	
+	\begin{problem}
+		For each linear operator in \textbf{Problem 6}, find the characteristic polynomial $f(t)$ of $\mathsf{T}$, and verify that the characteristic polynomial of $\mathsf{T}_\mathsf{W}$ (computed in \textbf{Problem 9}) divides $f(t)$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$, let $v$ be a nonzero vector in $\mathsf{V}$, and let $\mathsf{W}$ be the $\mathsf{T}$-cyclic subspace of $\mathsf{V}$ generated by $v$. Prove that
+		\begin{enumerate}[(a)]
+			\item $\mathsf{W}$ is $\mathsf{T}$-invariant.
+			\item Any $\mathsf{T}$-invazriant subspace of $\mathsf{V}$ containing $v$ also contains $\mathsf{W}$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Prove that $A=\begin{pmatrix}
+			B_1&B_2\\O&B_3
+		\end{pmatrix}$ in the proof of \textbf{Theorem 5.21}.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$, let $v$ be a nonzero vector in $\mathsf{V}$, and let $\mathsf{W}$ be the $\mathsf{T}$-cyclic subspace of $\mathsf{V}$ generated by $v$. For any $w\in\mathsf{V}$, prove that $w\in\mathsf{W}$ if and only if there exists a polynomial $g(t)$ such that $w=g(\mathsf{T})(v)$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Prove that the polynomial $g(t)$ of \textbf{problem 13} can always be chosen so that its degree is less than or equal to $\dim(\mathsf{W})$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Use the Cayley-Hamilton theorem to prove its corollary for matrices.
+		$Warning!$: If $f(t)=\det(A-tI)$ is the characteristic polynomial of $A$, it is tempting to prove that $f(A)=O$ by saying $f(A)=\det(A-AI)=det(O)=0$. But this argument is $non$-$sense$, Why?
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$.
+		\begin{enumerate}[(a)]
+			\item Prove that if the characteristic polynomial of $\mathsf{T}$ spilits, then so does the characteristic polynomial of the restriction of $\mathsf{T}$ to any $\mathsf{T}$-invariant subspace of $\mathsf{V}$.
+			\item Deduce that if the characteristic polynomial of $\mathsf{T}$ splits, then any nontrivial $\mathsf{T}$-invariant subspace of $\mathsf{V}$ contains an eigenvector of $\mathsf{T}$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A$ be an $n\times n$ matrix. Prove that $$\dim\left(\text{span}\left(I_n,~A,~A^2,\ldots\right)\right)\leq n.$$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A$ be an $n\times n$ matrix with characteristic polynomial $$f(t)=(-1)^nt^n+a_{n-1}t^{n-1}+\cdots+a_1t+a_0.$$
+		\begin{enumerate}[(a)]
+			\item Prove that $A$ is invertible if and only if $a_0\neq 0$.
+			\item Prove that if $A$ is invertible, then $$A^{-1}=(-1/a_0)\left[(-1)^nA^{n-1}+a_{n-1}A^{n-2}+\cdots+a_1 I_n\right].$$
+			\item Use (b) to compute $A^{-1}$ for $$A=\begin{pmatrix*}[r]
+				1&2&1\\0&2&3\\0&0&-1
+			\end{pmatrix*}.$$
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A$ denote $K\times k$ matrix
+		$$\begin{pmatrix}
+			0&0&\cdots&0&-a_0\\
+			1&0&\cdots&0&-a_1\\
+			0&0&\cdots&0&-a_2\\
+			\vdots&\vdots&&\vdots&\vdots\\
+			0&0&\cdots&0&-a_{k-2}\\
+			0&0&\cdots&1&-a_{k-1}
+		\end{pmatrix},$$
+		where $a_0$, $a_1$, $\ldots$, $a_{k-1}$ are arbitrary scalars. Prove that the characteristic polynomial of $A$ is
+		$$(-1)^k(a_0+a_1t+\cdots +a_{k-1}t^{k-1}+t^k).$$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$, and suppose that $\mathsf{V}$ is a $\mathsf{T}$-cyclic subspace of itself. Prove that if $\mathsf{U}$ is a linear operator on $\mathsf{V}$, then $\mathsf{UT}=\mathsf{TU}$ if and only if $\mathsf{U}=g(\mathsf{T})$ for soem polynomial $g(t)$.\\
+		$Hint$: Suppose that $\mathsf{V}$ is generated by $v$. Choose $g(t)$ according to \textbf{Problem 13} so that $g(\mathsf{T})(v)=\mathsf{U}(v)$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a two-dimensional vector space $\mathsf{V}$. Prove that either $\mathsf{V}$ is a $\mathsf{T}$-cyclic subspace of itself or $\mathsf{T}=c\mathsf{I}$ for some scalar $c$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a two-dimensional vector space $\mathsf{V}$ and suppose that $\mathsf{T}\neq c\mathsf{I}$ for any scalar $c$. Show that if $\mathsf{U}$ is any linear operator on $\mathsf{V}$ such that $\mathsf{UT}=\mathsf{TU}$, then $\mathsf{U}=g(\mathsf{T})$ for some polynomial $g(t)$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$, and let $\mathsf{W}$ be a $\mathsf{T}$-invariant subspace of $\mathsf{V}$. Suppose that $v_1$, $v_2$, $\ldots$, $v_k$ are eigenvectors of $\mathsf{T}$ corresponding to distinct eigenvalues. Prove that if $v_1+v_2+\cdots+v_k$ is in $\mathsf{W}$, then $v_i\in\mathsf{W}$ for all $i$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Prove that the restriction of a diagonalizable linear operator $\mathsf{T}$ to any nontrivial $\mathsf{T}$-invariant subspace is also diagonalizable.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\setcounter{problem}{32}
+	\begin{problem}
+		Let $\mathsf{T}$ be alinear operator on a vector space $\mathsf{V}$, and let $\mathsf{W}_1$, $\mathsf{W}_2$, $\ldots$, $\mathsf{W}_k$ be $\mathsf{T}$-invariant subspaces of $\mathsf{V}$. Prove that $\mathsf{W}_1+\mathsf{W}_2+\cdots+\mathsf{W}_k$ is also a $\mathsf{T}$-invariant subspace of $\mathsf{V}$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Give a direct proof of \textbf{Theorem 5.25} for the case $k=2$. (This result is used in the proof of \textbf{Theroem 5.24}.)
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage	
+	\begin{problem}
+		Prove \textbf{Theorem 5.25}.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$. Prove that $\mathsf{T}$ is diagonalizable if and only if $\mathsf{V}$ is the direct sum of one-dimensional $\mathsf{T}$-invariant subspaces.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be alinear operator on a finite-dimensional vector space $\mathsf{V}$, and let $\mathsf{W}_1$, $\mathsf{W}_2$, $\ldots$, $\mathsf{W}_k$ be $\mathsf{T}$-invariant subspaces of $\mathsf{V}$ such that $\mathsf{V}=\mathsf{W}_1\oplus\mathsf{W}_2\oplus\cdots\oplus\mathsf{W}_k$. Prove that$$\det(\mathsf{T})=\det\left(\mathsf{T}_{\mathsf{W}_1}\right)\det\left(\mathsf{T}_{\mathsf{W}_2}\right)\cdots\det\left(\mathsf{T}_{\mathsf{W}_k}\right).$$
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be alinear operator on a finite-dimensional vector space $\mathsf{V}$, and let $\mathsf{W}_1$, $\mathsf{W}_2$, $\ldots$, $\mathsf{W}_k$ be $\mathsf{T}$-invariant subspaces of $\mathsf{V}$ such that $\mathsf{V}=\mathsf{W}_1\oplus\mathsf{W}_2\oplus\cdots\oplus\mathsf{W}_k$. Prove that $\mathsf{T}$ is diagonalizable if and only if $\mathsf{T}_{\mathsf{W}_i}$ is diagonalizable for all $i$.
+	\end{problem}
+	\newpage
+	\begin{problem}
+		Let $\mathcal{C}$ be a collection of diagonalizable linear operatos on a finite-dimensional vector space $\mathsf{V}$. Prove that there is an ordered basis $\beta$ such that $[\mathsf{T}]_\beta$ is a diagonal matrix for all $\mathsf{T}\in\mathcal{C}$ if and only if the operatos of $\mathcal{C}$ commute under composition. (This is an extension of \textbf{Problem 25}.)\\
+		$Hints$: The result is trivial if each operator has only one eigenvalue. Otherwise, establish the general result by mathematical induction on $\dim(\mathsf{V})$, using the fact that $\mathsf{V}$ is the direct sum of the eigenspaces of some operator in $\mathcal{C}$ that has more than one eigenvalue.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $B_1$, $B_2$, $\ldots$, $B_k$ be square matrices with entries in the smae field, and let $A=B_1\oplus B_2\oplus\cdots\oplus B_k$. Prove that the characteristic polynomial of $A$ is the product of the characteristic polynomials of the $B_i$'s.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let
+		\begin{equation*}
+			A=\begin{pmatrix}
+				1&2&\cdots&n\\
+				n+1&n+2&\cdots&2n\\
+				\vdots&\vdots&&\vdots\\
+				n^2-n+1&n^2-n+2&\cdots&n^2
+			\end{pmatrix}.
+		\end{equation*}
+		Find the characteristic polynomial of $A$.\\
+		$Hint$: First prove that $A$ has rank $2$ and span$\left(\left\{(1,~1,~\ldots,~1),~(1,~2,~\ldots,~n)\right\}\right)$ is $\mathsf{L}_A$-invariant.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A\in\mathsf{M}_{n\times n}(R)$ be the matrix defined by $A_{ij}=1$ for all $i$ and $j$. Find the characteristic polynomial of $A$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+\end{document}
