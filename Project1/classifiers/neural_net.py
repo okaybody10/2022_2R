@@ -73,7 +73,7 @@ class TwoLayerNet(object):
     # Compute the forward pass
     scores = None
     #############################################################################
-    # TODO: Perform the forward pass, computing the class scores for the input. #
+    # COMPLETE: Perform the forward pass, computing the class scores for the input. #
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
@@ -115,7 +115,7 @@ class TwoLayerNet(object):
     # Compute the loss
     loss = None
     #############################################################################
-    # TODO: Finish the forward pass, and compute the loss. This should include  #
+    # COMPLETE: Finish the forward pass, and compute the loss. This should include  #
     # both the data loss and L2 regularization for W1 and W2. Store the result  #
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss.                                                          #
