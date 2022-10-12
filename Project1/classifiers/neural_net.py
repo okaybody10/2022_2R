@@ -79,7 +79,29 @@ class TwoLayerNet(object):
     #############################################################################
 	# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	
-    pass
+    # Note that shape of W1: (Input_size, hidden_size) / b1: (hidden size, )
+    # As amount of sample is N, input's dimension is D
+    # At first, let's calculate first layer!
+    # For convinence, let's append b1 to W1, and correct at X
+
+    addition_input = np.ones((N, ))
+    correction_input = np.concatenate((X, addition_input.reshape(-1, 1)), axis = 1) # Stack column direction
+    correction_first_weight = np.concatenate((W1, b1.reshape(1, -1)), axis = 0) # Stack row direction
+    not_activate_first_layer = np.matmul(correction_input, correction_first_weight) # (N, D+1) * (D+1, H) => (N, H)
+    activate_first_layer = not_activate_first_layer.copy()
+    activate_first_layer[activate_first_layer <= 0] = 0
+
+    N, H = activate_first_layer.shape
+
+    # In the same way, we append b2 to W2, and correct activate_first_layer
+    
+    addition_first_layer = np.ones((H, ))
+    correction_second_input = np.concatenate((activate_first_layer, addition_first_layer.reshape(-1, 1)), axis = 1) # Stack column direction
+    correction_second_weight = np.concatenate((W2, b2.reshape(1, -1)), axis = 0) # Stack row direction
+    scores = np.matmul(correction_second_input, correction_second_weight) # (N, H+1) * (H+1, C) => (N, C)
+
+    # Finally, we process softmax
+    scores = np.exp(scores) / np.sum(np.exp(scores), axis = 0)
 	
 	# *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     #############################################################################
@@ -100,8 +122,45 @@ class TwoLayerNet(object):
     #############################################################################
 	# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	
-    pass
-	
+    # Softmax_error = -np.sum(np.log(np.exp(scores)/np.sum(np.exp(scores), axis = 0)) * y, axis = 0) / self.output_size or -np.sum(np.log(scores) * y, axis = 0)
+    softmax_error = -np.log(scores)[np.argmax(y)] / self.output_size
+    # Although summation is more compatiable(or generally, .. ), it is slower than using argmax.
+    # More specifically, let's take a look following codes & result
+
+    #############################################################################
+    # 26.3 µs ± 613 ns per loop (mean ± std. dev. of 7 runs, 15000 loops each) / %timeit -n 15000 k = -np.sum(np.log(np.exp(a)/np.sum(np.exp(a), axis = 0)), axis = 0)
+    # 24.9 µs ± 182 ns per loop (mean ± std. dev. of 7 runs, 15000 loops each) / %timeit -n 15000 k = -np.log(np.exp(a) / np.sum(np.exp(a), axis = 0))[np.argmax(ans)]
+    # where a, and ans are vectors which both shapes are (1000, )
+    # As aboves, we can know that using argmax is little faster (But enough!) as the expense of compactiable.
+    #############################################################################
+
+    # L2 regularizaiton for W1 / parameter : reg
+    # Surely, W1 ** 2 is easy to modify. But previous code is slower than W1 * W1! (Why?)
+
+    #############################################################################
+    # 1.41 µs ± 493 ns per loop (mean ± std. dev. of 7 runs, 15000 loops each) / %timeit -n 15000 k**2
+    # 1.08 µs ± 6.39 ns per loop (mean ± std. dev. of 7 runs, 15000 loops each) / %timeit -n 15000 k*k
+    # where shape of k is (30, 30)
+    # As aboves, we can know that using * is little faster (very very little) as disadvantage of modifying.
+    #############################################################################
+
+    # ** is wrapper for the pow function, but * is arithmetic operator, so ** is more overhead than *
+    # Are square, cube, ... and more conserved?
+    # Hence divide & conquer mechanism works on pow function, I think that isn't conserved... (If use dynamic progamming with operator *, that law will be conserved!)
+
+    regularization_w1 = reg * np.sum(W1 * W1)
+
+    # In the same way, we can calculate regularization about W2
+
+    regularization_w2 = reg * np.sum(W2 * W2)
+
+    # If we modify(i.e. add, subtract, ...) some loss function, we can deal with easily using append() function.
+
+    losses = [softmax_error, regularization_w1, regularization_w2] 
+
+    loss = np.sum(losses)
+
+    #############################################################################
 	# *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     #############################################################################
     #                              END OF YOUR CODE                             #
