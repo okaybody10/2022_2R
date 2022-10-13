@@ -1,4 +1,5 @@
 from __future__ import print_function
+from turtle import shape
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -89,7 +90,7 @@ class TwoLayerNet(object):
     correction_first_weight = np.concatenate((W1, b1.reshape(1, -1)), axis = 0) # Stack row direction
     not_activate_first_layer = np.matmul(correction_input, correction_first_weight) # (N, D+1) * (D+1, H) => (N, H)
     activate_first_layer = not_activate_first_layer.copy()
-    activate_first_layer[activate_first_layer <= 0] = 0
+    activate_first_layer[activate_first_layer < 0] = 0
 
     N, H = activate_first_layer.shape
 
@@ -98,10 +99,12 @@ class TwoLayerNet(object):
     addition_first_layer = np.ones((H, ))
     correction_second_input = np.concatenate((activate_first_layer, addition_first_layer.reshape(-1, 1)), axis = 1) # Stack column direction
     correction_second_weight = np.concatenate((W2, b2.reshape(1, -1)), axis = 0) # Stack row direction
-    scores = np.matmul(correction_second_input, correction_second_weight) # (N, H+1) * (H+1, C) => (N, C)
+    scores_bef = np.matmul(correction_second_input, correction_second_weight) # (N, H+1) * (H+1, C) => (N, C)
+
+    N, C = scores_bef.shape
 
     # Finally, we process softmax
-    scores = np.exp(scores) / np.sum(np.exp(scores), axis = 0)
+    scores = np.exp(scores_bef) / np.sum(np.exp(scores_bef), axis = 0).reshape(-1, 1)
 	
 	# *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     #############################################################################
@@ -122,17 +125,10 @@ class TwoLayerNet(object):
     #############################################################################
 	# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	
-    # Softmax_error = -np.sum(np.log(np.exp(scores)/np.sum(np.exp(scores), axis = 0)) * y, axis = 0) / self.output_size or -np.sum(np.log(scores) * y, axis = 0)
-    softmax_error = -np.log(scores)[np.argmax(y)] / self.output_size
-    # Although summation is more compatiable(or generally, .. ), it is slower than using argmax.
-    # More specifically, let's take a look following codes & result
-
-    #############################################################################
-    # 26.3 µs ± 613 ns per loop (mean ± std. dev. of 7 runs, 15000 loops each) / %timeit -n 15000 k = -np.sum(np.log(np.exp(a)/np.sum(np.exp(a), axis = 0)), axis = 0)
-    # 24.9 µs ± 182 ns per loop (mean ± std. dev. of 7 runs, 15000 loops each) / %timeit -n 15000 k = -np.log(np.exp(a) / np.sum(np.exp(a), axis = 0))[np.argmax(ans)]
-    # where a, and ans are vectors which both shapes are (1000, )
-    # As aboves, we can know that using argmax is little faster (But enough!) as the expense of compactiable.
-    #############################################################################
+    # First, we need to calculate loss per data i, and then summation of that
+    # Apply fancy indexing with ground truth's transpose, and then np.sum
+    # Shape of scores[N, y] is (N, ), so apply np.sum with axis = 0 (not necessary, but it is better to explict information of axis)
+    softmax_error = - np.sum(np.log(scores)[np.arange(N), y], axis = 0) / N
 
     # L2 regularizaiton for W1 / parameter : reg
     # Surely, W1 ** 2 is easy to modify. But previous code is slower than W1 * W1! (Why?)
@@ -169,13 +165,59 @@ class TwoLayerNet(object):
     # Backward pass: compute gradients
     grads = {}
     #############################################################################
-    # TODO: Compute the backward pass, computing the derivatives of the weights #
+    # COMPLETE: Compute the backward pass, computing the derivatives of the weights #
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
 	# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-	
-    pass
+
+    # Structure of grads: {'W1': ~, 'b1': ~, 'W2': ~, 'b2': ~}
+    # We will calculatr gradients of aboves based on back propagation, which reuse previous layer's information (Not only gradients but kind of activation, loss, and so on)
+    # Loss function is scalar, probability with softmax is (N, ), Result is (N, C) (Before softmax)
+    # MEMO: Think Expend dimension to parallize input datas? => Not necessary..? => einsum after summation
+    
+    # First, we will get gradient about probability (furthermore, output of second layer)
+    # To caclculate, we will pre-calculate padding of y (y: (N, 1) => (N, C))
+    back_y = np.zeors((N, C))
+    back_y[np.arange(N), y] = 1
+    output2_grad =  scores - back_y # scores : (N, C), back_y : (N, C) / Element-wise operation. => output2_grad : (N, C)
+
+    # Let us calculate gradient of W2, b2!
+    # Note that Z_2 = W_2 x + b
+    # Therefore gradient of local and global are (dz / dw = )x^T, (dL / dz = )output2_grad * x^T, respectively.
+    # Hence weight will be calculated each dataset, we have to expand dimension like (N, C, 1) and (N, H, 1), then perform matrix multiplication (i.e. outer product of two matrix)
+    # For convenience, we will use 'np.einsum' to calculate simply, and then summation by axis-0 to use np.sum ((N, H, C) -> (H, C))
+    # Surely, we can calculate using matrix multiplication (1. expand output2_grad and activate_first_layer to use np.expand, then calculate)
+    # More specifially, weight2_grad = np.sum(np.expand_dims(activate_first_layer, axis = 2) @ np.expand_dims(output_2grad, axis = 1), axis = 0)
+    weight2_grad = np.sum(np.einsum('ij,ik -> ikj', output2_grad, activate_first_layer), axis = 0) # activate_first_layer : Input of second layer
+    z2_grad = np.matmul(output2_grad, W2.T) # output2_grad: (N, C) / W2: (H, C) => W2.T: (C, H) / z2_grad: (N, H)
+    
+    # In the same way, let's calculate the bias.
+    # As not only shape of bias is (C, ) but local gradient of bias consists only 1, gradient of bias with respective to loss is same as output2_grad(dL / dz)
+    bias2_grad = output2_grad
+
+    # Insert into dictionary, called 'params'
+    grads['W2'] = weight2_grad
+    grads['b2'] = bias2_grad
+
+    # Now we have to calculate (global) gradient of x2(i.e. activate_first_layer)
+    # That will be diagonal matrix, which element of diagonal is composition of activation function and z1
+    # We use relu by activation function, detrivate cofficient is 1 if input is positive, 0 otherwise.
+
+    # MEMO: Please dobule-check following code & formula.
+    activate_first_layer_grad = np.zeros(shape = (N, H, H))
+    diag_check = np.where(activate_first_layer >= 0) # Extracting only positive values' indices.
+    activate_first_layer_grad[diag_check[0], diag_check[1], diag_check[1]] = 1 # Size : (N, H, H)
+    
+    output1_grad = np.einsum('ijk, ik -> ij', activate_first_layer_grad, z2_grad) # Size : (N, H)
+    weight1_grad = np.sum(np.einsum('ij, ik -> ikj', output1_grad, X)) # Size: (N, D) * (N, H) ->(einsum) (N, D, H) ->(sum) (D, H)
+
+    bias1_grad = output1_grad
+
+    # Insert into dictionary, called 'params'
+    grads['W1'] = weight1_grad
+    grads['b1'] = bias1_grad
+
 	
 	# *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     #############################################################################
@@ -218,13 +260,16 @@ class TwoLayerNet(object):
       y_batch = None
 
       #########################################################################
-      # TODO: Create a random minibatch of training data and labels, storing  #
+      # COMPLETE: Create a random minibatch of training data and labels, storing  #
       # them in X_batch and y_batch respectively.                             #
 	  # - See [ np.random.choice ]											  #
       #########################################################################
 	  # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	  
-      pass
+      indices = np.random.choice(X.shape[0], batch_size)
+
+      X_batch, y_batch = X[indices], y[indices]
+
 	  
 	  # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
       #########################################################################
@@ -236,14 +281,17 @@ class TwoLayerNet(object):
       loss_history.append(loss)
 	  
       #########################################################################
-      # TODO: Use the gradients in the grads dictionary to update the         #
+      # COMPLETE: Use the gradients in the grads dictionary to update the         #
       # parameters of the network (stored in the dictionary self.params)      #
       # using stochastic gradient descent. You'll need to use the gradients   #
       # stored in the grads dictionary defined above.                         #
       #########################################################################
 	  # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	  
-      pass
+      self.params['W1'] = self.params['W1'] - learning_rate * grads['W1'] / batch_size
+      self.params['W2'] = self.params['W2'] - learning_rate * grads['W2'] / batch_size
+      self.params['b2'] = self.params['b1'] - learning_rate * grads['b1'] / batch_size
+      self.params['b2'] = self.params['b2'] - learning_rate * grads['b2'] / batch_size
 	  
 	  # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
       #########################################################################
@@ -289,12 +337,17 @@ class TwoLayerNet(object):
     y_pred = None
 
     ###########################################################################
-    # TODO: Implement this function; it should be VERY simple!                #
+    # COMPLETE: Implement this function; it should be VERY simple!                #
 	# perform forward pass and return index of maximum scores				  #
     ###########################################################################
 	# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	
-    pass
+    First_layer = np.matmul(X, self.params['W1']) + self.params['b1']
+    First_layer[First_layer < 0] = 0
+
+    Second_layer = np.matmul(First_layer, self.params['W2']) + self.params['b2']
+
+    y_pred = np.argmax(Second_layer, axis = 1)
 	
 	# *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     ###########################################################################
