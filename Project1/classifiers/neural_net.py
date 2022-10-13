@@ -1,7 +1,7 @@
 from __future__ import print_function
 from turtle import shape
 
-import numpy as np
+import cupy as np
 import matplotlib.pyplot as plt
 
 class TwoLayerNet(object):
@@ -74,7 +74,7 @@ class TwoLayerNet(object):
     # Compute the forward pass
     scores = None
     #############################################################################
-    # COMPLETE: Perform the forward pass, computing the class scores for the input. #
+    # TODO: Perform the forward pass, computing the class scores for the input. #
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
@@ -91,20 +91,23 @@ class TwoLayerNet(object):
     not_activate_first_layer = np.matmul(correction_input, correction_first_weight) # (N, D+1) * (D+1, H) => (N, H)
     activate_first_layer = not_activate_first_layer.copy()
     activate_first_layer[activate_first_layer < 0] = 0
-
+    
     N, H = activate_first_layer.shape
 
     # In the same way, we append b2 to W2, and correct activate_first_layer
     
-    addition_first_layer = np.ones((H, ))
+    addition_first_layer = np.ones((N, ))
     correction_second_input = np.concatenate((activate_first_layer, addition_first_layer.reshape(-1, 1)), axis = 1) # Stack column direction
     correction_second_weight = np.concatenate((W2, b2.reshape(1, -1)), axis = 0) # Stack row direction
-    scores_bef = np.matmul(correction_second_input, correction_second_weight) # (N, H+1) * (H+1, C) => (N, C)
+    scores = np.matmul(correction_second_input, correction_second_weight) # (N, H+1) * (H+1, C) => (N, C)
 
-    N, C = scores_bef.shape
+    N, C = scores.shape
 
     # Finally, we process softmax
-    scores = np.exp(scores_bef) / np.sum(np.exp(scores_bef), axis = 0).reshape(-1, 1)
+    # print(scores_bef)
+    # print(np.sum(np.exp(scores_bef), axis = 1).reshape(-1, 1))
+    
+
 	
 	# *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     #############################################################################
@@ -128,7 +131,10 @@ class TwoLayerNet(object):
     # First, we need to calculate loss per data i, and then summation of that
     # Apply fancy indexing with ground truth's transpose, and then np.sum
     # Shape of scores[N, y] is (N, ), so apply np.sum with axis = 0 (not necessary, but it is better to explict information of axis)
-    softmax_error = - np.sum(np.log(scores)[np.arange(N), y], axis = 0) / N
+    scores = scores - np.max(scores, axis = 1).reshape(-1, 1)
+    scores = np.exp(scores) / np.sum(np.exp(scores), axis = 1).reshape(-1, 1)
+    scores_after = np.log(scores)
+    softmax_error = - np.sum(scores_after[np.arange(N), y], axis = 0) / N
 
     # L2 regularizaiton for W1 / parameter : reg
     # Surely, W1 ** 2 is easy to modify. But previous code is slower than W1 * W1! (Why?)
@@ -152,7 +158,8 @@ class TwoLayerNet(object):
 
     # If we modify(i.e. add, subtract, ...) some loss function, we can deal with easily using append() function.
 
-    losses = [softmax_error, regularization_w1, regularization_w2] 
+    losses = np.array([softmax_error, regularization_w1, regularization_w2])
+
 
     loss = np.sum(losses)
 
@@ -165,7 +172,7 @@ class TwoLayerNet(object):
     # Backward pass: compute gradients
     grads = {}
     #############################################################################
-    # COMPLETE: Compute the backward pass, computing the derivatives of the weights #
+    # FIXME: Compute the backward pass, computing the derivatives of the weights #
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
@@ -178,9 +185,11 @@ class TwoLayerNet(object):
     
     # First, we will get gradient about probability (furthermore, output of second layer)
     # To caclculate, we will pre-calculate padding of y (y: (N, 1) => (N, C))
-    back_y = np.zeors((N, C))
+    back_y = np.zeros((N, C))
     back_y[np.arange(N), y] = 1
-    output2_grad =  scores - back_y # scores : (N, C), back_y : (N, C) / Element-wise operation. => output2_grad : (N, C)
+    # print(scores, back_y, scores - back_y, sep = '\n')
+    # print("==========================================")
+    output2_grad = (scores - back_y) / N # scores : (N, C), back_y : (N, C) / Element-wise operation. => output2_grad : (N, C)
 
     # Let us calculate gradient of W2, b2!
     # Note that Z_2 = W_2 x + b
@@ -189,15 +198,15 @@ class TwoLayerNet(object):
     # For convenience, we will use 'np.einsum' to calculate simply, and then summation by axis-0 to use np.sum ((N, H, C) -> (H, C))
     # Surely, we can calculate using matrix multiplication (1. expand output2_grad and activate_first_layer to use np.expand, then calculate)
     # More specifially, weight2_grad = np.sum(np.expand_dims(activate_first_layer, axis = 2) @ np.expand_dims(output_2grad, axis = 1), axis = 0)
-    weight2_grad = np.sum(np.einsum('ij,ik -> ikj', output2_grad, activate_first_layer), axis = 0) # activate_first_layer : Input of second layer
+    weight2_grad = np.sum(np.einsum('ij,ik -> ijk', activate_first_layer, output2_grad), axis = 0) # activate_first_layer : Input of second layer
     z2_grad = np.matmul(output2_grad, W2.T) # output2_grad: (N, C) / W2: (H, C) => W2.T: (C, H) / z2_grad: (N, H)
     
     # In the same way, let's calculate the bias.
     # As not only shape of bias is (C, ) but local gradient of bias consists only 1, gradient of bias with respective to loss is same as output2_grad(dL / dz)
-    bias2_grad = output2_grad
+    bias2_grad = np.sum(output2_grad, axis = 0)
 
     # Insert into dictionary, called 'params'
-    grads['W2'] = weight2_grad
+    grads['W2'] = weight2_grad + 2 * reg * W2
     grads['b2'] = bias2_grad
 
     # Now we have to calculate (global) gradient of x2(i.e. activate_first_layer)
@@ -206,16 +215,18 @@ class TwoLayerNet(object):
 
     # MEMO: Please dobule-check following code & formula.
     activate_first_layer_grad = np.zeros(shape = (N, H, H))
-    diag_check = np.where(activate_first_layer >= 0) # Extracting only positive values' indices.
+    diag_check = np.where(not_activate_first_layer >= 0) # Extracting only positive values' indices.
     activate_first_layer_grad[diag_check[0], diag_check[1], diag_check[1]] = 1 # Size : (N, H, H)
     
+    # output1_grad = activate_first_layer_grad * np.expand_dims(z2_grad, axis = -1)
+    
     output1_grad = np.einsum('ijk, ik -> ij', activate_first_layer_grad, z2_grad) # Size : (N, H)
-    weight1_grad = np.sum(np.einsum('ij, ik -> ikj', output1_grad, X)) # Size: (N, D) * (N, H) ->(einsum) (N, D, H) ->(sum) (D, H)
+    weight1_grad = np.sum(np.einsum('ij, ik -> ijk', X, output1_grad), axis = 0) # Size: (N, D) * (N, H) ->(einsum) (N, D, H) ->(sum) (D, H)
 
-    bias1_grad = output1_grad
+    bias1_grad = np.sum(output1_grad, axis = 0)
 
     # Insert into dictionary, called 'params'
-    grads['W1'] = weight1_grad
+    grads['W1'] = weight1_grad + 2 * reg * W1
     grads['b1'] = bias1_grad
 
 	
@@ -266,7 +277,7 @@ class TwoLayerNet(object):
       #########################################################################
 	  # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	  
-      indices = np.random.choice(X.shape[0], batch_size)
+      indices = np.random.choice(a = X.shape[0], size = batch_size)
 
       X_batch, y_batch = X[indices], y[indices]
 
@@ -288,10 +299,10 @@ class TwoLayerNet(object):
       #########################################################################
 	  # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	  
-      self.params['W1'] = self.params['W1'] - learning_rate * grads['W1'] / batch_size
-      self.params['W2'] = self.params['W2'] - learning_rate * grads['W2'] / batch_size
-      self.params['b2'] = self.params['b1'] - learning_rate * grads['b1'] / batch_size
-      self.params['b2'] = self.params['b2'] - learning_rate * grads['b2'] / batch_size
+      self.params['W1'] = self.params['W1'] - learning_rate * grads['W1']
+      self.params['W2'] = self.params['W2'] - learning_rate * grads['W2']
+      self.params['b1'] = self.params['b1'] - learning_rate * grads['b1']
+      self.params['b2'] = self.params['b2'] - learning_rate * grads['b2']
 	  
 	  # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
       #########################################################################
@@ -342,6 +353,7 @@ class TwoLayerNet(object):
     ###########################################################################
 	# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 	
+    # print(np.matmul(X, self.params['W1']).shape, self.params['b1'].shape, sep='\n')
     First_layer = np.matmul(X, self.params['W1']) + self.params['b1']
     First_layer[First_layer < 0] = 0
 
