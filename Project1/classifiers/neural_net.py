@@ -1,7 +1,7 @@
 from __future__ import print_function
 from turtle import shape
 
-import cupy as np
+import numpy as np
 import matplotlib.pyplot as plt
 
 class TwoLayerNet(object):
