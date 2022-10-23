@@ -1,0 +1,291 @@
+\documentclass[12pt]{book}
+
+\title{Analysis II}
+\author{Fall Semester\\MATH201}
+\date{}
+
+\usepackage{indentfirst}
+\usepackage{kotex}
+\usepackage{amsmath, amssymb, amsthm, amsfonts, graphics, epsfig, fancyhdr, bm}
+\usepackage{tikz-cd}
+\usepackage[shortlabels]{enumitem}
+\setlength{\headheight}{28pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Ch2. Linear Transformations and Matrices}
+\fancyfoot[C]{\thepage}
+
+\setlength\parindent{12pt}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remarks}
+\newtheorem{problem}{Problem}
+\newtheorem{definition}{Definition}
+
+\usepackage{chngcntr}
+\counterwithin{theorem}{chapter}
+\counterwithin{problem}{chapter}
+
+
+\setcounter{chapter}{1}
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\qedsymbol}{\ensuremath{\blacksquare}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\begin{document}
+	\chapter{Linear Transformations\\and Matrices}
+	\section*{Review}
+	\begin{definition}
+		Let $\beta=\{u_1,\ u_2,...,\ u_n\}$ be an ordered basis for a finite dimensional vector space $\mathsf{V}$. For $x\in \mathsf{V}$, let $a_1,\ a_2,...,\ a_n$ be the unique scalars such that
+		\begin{equation*}
+			x=\displaystyle\sum_{i=1} ^n a_iu_i
+		\end{equation*}
+	We define the \textbf{coordinate vector $x$ relative to $\beta$}, denoted $[x]_\beta$, by
+		\begin{equation*}
+			[x]_\beta=\begin{pmatrix}
+				a_1 \\
+				a_2 \\
+				\vdots \\
+				a_n
+			\end{pmatrix}
+		\end{equation*}.
+	\end{definition}
+	\begin{definition}
+		Using the notation above, we call the $m\times n$ matrix $A$ defined by $A_{ij}=a_{ij}$ the \textbf{matrix representation of $\mathsf{T}$ in the ordered basis $\beta$ and $\gamma$} and write $A=[\mathsf{T}]_\beta^\gamma$. If $\mathsf{V}=\mathsf{W}$ and $\beta=\gamma$, then we write $A=[\mathsf{T}]_\beta$.\\
+		Notice that the $j$th column of $A$ is simply $[T(v_j)]_\gamma$.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		Let $\mathsf{V}$, $\mathsf{W}$, and $\mathsf{Z}$ be finite-dimensional vector spaces with ordered bases $\alpha$, $\beta$ and $\gamma$, respectively. Let $\mathsf{T}\,:\,\mathsf{V}\rightarrow\mathsf{W}$ and $\mathsf{U}\,:\,\mathsf{W}\rightarrow\mathsf{Z}$ be linear transformations. Then
+		\begin{equation*}
+			[\mathsf{UT}]_\alpha^\gamma=[\mathsf{U}]_\beta^\gamma[\mathsf{T}]_\alpha^\beta
+		\end{equation*}
+	\end{theorem}
+	\begin{theorem}
+		Let $A$ be an $m\times n$ matrix and $B$ be an $n\times p$ matrix. For each $j\ (1\leq j\leq p)$ let $u_j$ and $v_j$ denote the $j$th columns of $AB$ and $B$, respectively. Then
+		\begin{enumerate}[(a)]
+			\item $u_j=Av_j$
+			\item $v_j=Be_j$, where $e_j$ is the $j$th standard vector of $\mathsf{F}^p$
+		\end{enumerate}
+		i.e. \begin{equation*}
+			AB=\begin{pmatrix}
+				Av_1\\
+				Av_2\\
+				\vdots\\
+				Av_p
+			\end{pmatrix}
+		\end{equation*}
+	\end{theorem}
+	\begin{theorem}
+		Let $\mathsf{V}$ and $\mathsf{W}$ be finite-dimensional vector spaces having ordered basis $\beta$ and $\gamma$, respectively, and let $\mathsf{T}\,:\,\mathsf{V}\rightarrow\mathsf{W}$ be linear. Then, for each $u\in \mathsf{V}$, we have
+		\begin{equation*}
+			[\mathsf{T}(u)]_\gamma=[\mathsf{T}]_\beta^\gamma[u]_\beta
+		\end{equation*}
+	\end{theorem}
+	\begin{theorem}
+		Let $\beta$ and $\beta'$ be two ordered basis for a finite-dimensional vector space $\mathsf{V}$, and let $Q=[\mathsf{I}_\mathsf{V}]_\beta^{\beta'}$, $\mathsf{T}\,:\,\mathsf{V}\rightarrow\mathsf{V}$. Then
+		\begin{enumerate}[(a)]
+			\item $Q$ is invertible
+			\item For any $v\in \mathsf{V}$, $[v]_\beta=Q[v]_{\beta'}$
+			\item $\mathsf{T}_{\beta'}=Q^{-1}[\mathsf{T}]_\beta Q$
+		\end{enumerate}
+	\end{theorem}
+	\indent The matirx $Q=[\mathsf{I}_\mathsf{V}]_\beta^{\beta'}$ is called \textbf{change of coordinate matrix}. Also, we say that $Q$ \textbf{changes $\beta'$-coordinates into $\beta$-coordinates}.\\
+	That is, $j$th column of $Q$ is $[x_j']_{\beta}$, where $\beta'=\{x_1',\ x_2',...,\ x_n'\}$.
+	\setcounter{chapter}{4}
+	\fancyhead[R]{Ch5. Diagonalization}
+	\chapter{Diagonalization}
+	\section*{Eigenvalues and Eigenvectors}
+	\begin{definition}
+		A linear operator $\mathsf{T}$ on a finite-dimensional vector space $\mathsf{V}$ is called diagonalizable if there is an ordered basis $\beta$ for $\mathsf{V}$ such that $[\mathsf{T}]_\beta$ is a diagonal matrix. A square matrix $A$ is called \textbf{diagonalizable} if $\mathsf{L}_A$ is diagonalizable.
+	\end{definition}
+	\newpage
+	\begin{definition}
+		Let $\mathsf{T}$ be a linear operator on a vector space $|mathsf{V}$ A nonzero vector $v\in V$ is called an \textbf{eigenvector} of $\mathsf{T}$ if there exists a scalar $\lambda$ such that $\mathsf{T}(v)=\lambda v$. The scalar $\lambda$ is called the \textbf{eigenvalue} corresponding to the eigenvector $v$.\\
+		\indent Let $A$ be in $\mathsf{M}_{n\times n}(F)$. A nonzero vector $v\in \mathsf{F}^n$ is called an \textbf{eigenvector} of $A$ if $v$ is an eigenvector of $\mathsf{L}_A$; that is, if $Av=\lambda v$ for some scalar $\lambda$. The scalar $\lambda$ is called the \textbf{eigenvalue} of $A$ corresponding to the eigenvector $v$
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		A linear operator $\mathsf{T}$ on a finite-dimensional vector space $\mathsf{V}$ is diagonalizable if and only if there exists an ordered basis $\beta$ for $\mathsf{V}$ consisting of eigenvectors of $\mathsf{T}$.\\
+		\indent Furthermore, if $\mathsf{T}$ is diagonalizable, $\beta=\{v_1,\ v_2,...,\ v_n\}$ is an ordered basis of eigenvectors of $\mathsf{T}$, and $D=[\mathsf{T}]_\beta$, then $D$ is a diagonal matrix and $D_{jj}$ is the eigenvalue corresponding to $v_j$ for $1\leq j \leq n$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Let $A\in \mathsf{M}_{n\times n}(F)$. THen a scalar $\lambda$ is an eigenvalue of $A$ if and only if $\det(A-\lambda I_n)=0$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{definition}
+		Let $A\in \mathsf{M}_{n\times n}(F).$ The polynomial $f(t)=\det(A-t I_n)$ is called the \textbf{characteristic polynomial} of $A$.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		Let $A\in M_{n\times n}(F)$.\\
+		\begin{enumerate}[(a)]
+			\item The characteristic polynomial of $A$ is a polynomial of degree $n$ with leading coefficient $(-1)^n$
+			\item $A$ has at most $n$ distinct eigenvalues.
+		\end{enumerate}
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$, and let $\lambda$ be an eigenvalue of $\mathsf{T}$. A vector $v\in \mathsf{V}$ is an eigenvalue of $\mathsf{T}$ corresponding to $\lambda$ if and only if $v\neq \mathit{0}$ and $v\in \mathsf{N}(\mathsf{T}-\lambda \mathsf{I})$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$, and let $\beta$ be an ordered basis for $\mathsf{V}$. Prove that $\lambda$ is an eigenvalue of $\mathsf{T}$ if and only if $\lambda$ is an eigenvalue of $[\mathsf{T}]_\beta$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem} Prove following theorems.
+		\begin{enumerate}[(a)]
+			\item Prove that a linear operator $\mathsf{T}$ on a finite-dimensional vector space is invertible if and only if zero is not an eigenvalue of $\mathsf{T}$
+			\item Let $\mathsf{T}$ be an invertible linear operator. Prove that a scalar $\lambda$ is an eigenvalue of $\mathsf{T}$ if and only if $\lambda^{-1}$ is an eigenvalue of $\mathsf{T}^{-1}$.
+			\item State and prove results analogous to (a) and (b) for matrices.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Prove that the eigenvalues of an upper triangular matrix $M$ are the diagonal entries of $M$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{V}$ be a finite-dimensional vector space, and let $\lambda$ be any scalar.
+		\begin{enumerate}[(a)]
+			\item For any ordered basis $\beta$ for $\mathsf{V}$, prove that $[\lambda\mathsf{I}_\mathsf{V}]_\beta=\lambda I$.
+			\item Compute the characteristic polynomial of $\lambda\mathsf{I}_\mathsf{V}$.
+			\item Show that $\lambda\mathsf{I}_\mathsf{V}$ is diagonalizable and has only one eigenvalue.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		A \textbf{scalar matrix} is a square matrix of the form $\lambda I$ for some scalar $\lambda$; that is, a scalar matrix is a diagonal matrix in which all the diagonal entries are equal.
+		\begin{enumerate}[(a)]
+			\item Prove that if a square matrix $A$ is similar to a scalar matrix $\lambda I$, then $A=\lambda I$.
+			\item Show that a diagonalizable matrix having only one eigenvalue is a scalar matrix.
+			\item Prove that $\begin{pmatrix}
+				1&1\\
+				0&1
+			\end{pmatrix}$ is not diagonalizable.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem} $\mathit{}$
+		\begin{enumerate}[(a)]
+			\item Prove that similar matrices have the same characteristic polynomial.
+			\item Show that the definition of the characteristic polynomial of a linear operator on a finite-dimensional vector space $\mathsf{V}$ is independent of the choice of basis for $\mathsf{V}$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be a linear operator on a finite-dimensional vector space $\mathsf{V}$ over a field $F$, let $\beta$ be an ordered basis for $\mathsf{V}$, and let $A=[\mathsf{T}]_\beta$. In reference to Figure 5.1, prove the following.
+		\begin{center}
+			\begin{tikzcd}
+				\mathsf{V} \ar[r, "\mathsf{T}"] \ar[d, "\phi_\beta", swap] & \mathsf{V} \ar[d, "\phi_\beta"] \\
+				\mathsf{F}^n \ar[r, "\mathsf{L}_A"] & \mathsf{F}^n
+			\end{tikzcd}\\[10pt]
+			\textbf{\figurename{ 5.1}}
+		\end{center}
+		\begin{enumerate}[(a)]
+			\item If $v\in \mathsf{V}$ and $\Phi_\beta(v)$ is an eigenvector of $A$ corresponding to the eigenvalue $\lambda$, then $v$ is an eigenvector $\mathsf{T}$ corresponding to $\lambda$.
+			\item If $\lambda$ is an eigenvalue of $A$ (and hence of $\mathsf{T}$), then a vector $y\in\mathsf{F}^n$ is an eigenvector of $A$ corresponding to $\lambda$ if and only if $\Phi_\beta^{-1}(y)$ is an eigenvector of $\mathsf{T}$ corresponding to $\lambda$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		For any square matrix $A$, prove that $A$ and $A^T$ have the same characteristic polynomial (and hence the same eigenvalues).
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Solve following problems.
+		\begin{enumerate}[(a)]
+			\item Prove that similar matrices have the same trace.
+			\item How would you define the trace of a linear operator on a finite-dimensional vector space? Justify that your definition is well-defined.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $\mathsf{T}$ be the linear operator on $\mathsf{M}_{n\times n}(R)$ defined by $\mathsf{T}(A)=A^T$.
+		\begin{enumerate}[(a)]
+			\item Show that $\pm1$ are the only eigenvalues of $\mathsf{T}$.
+			\item Describe the eigenvectors corresponding to each eigenvalue of $\mathsf{T}$.
+			\item Find an ordered basis $\beta$ for $\mathsf{M}_{2\times 2}(R)$ such that $[\mathsf{T}]_\beta$ is a diagonal matrix.
+			\item Find an ordered basis $\beta$ for $\mathsf{M}_{n \times n}(R)$ such that $[\mathsf{T}]_\beta$ is a diagonal matrix for $n>2$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A,\ B\in\mathsf{M}_{n \times n}(C)$.
+		\begin{enumerate}[(a)]
+			\item Prove that if $B$ is invertible, then there exists a scalar $c\in C$ such that $A+cB$ is not invertible.
+			\item Find nonzero $2\times 2 $matrices $A$ and $B$ such that both $A$ and $A+cB$ are invertible for all $c\in C$.
+		\end{enumerate}
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A$ and $B$ be similar $n\times n$ natrices. Prove that there exists an $n$-dimensional vector space $\mathsf{V}$, a linear operator $\mathsf{T}$ on $\mathsf{V}$, and ordered basis $\beta$ and $\gamma$ for $\mathsf{V}$ such that $A=[\mathsf{T}]_\beta$ and $B=[\mathsf{T}]_\gamma$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Let $A$ be an $n\times n$ matrix with characteristic polynomial
+		\begin{equation*}
+			f(t)=(-1)^nt^n+a_{n-1}t^{n-1}+\cdots+a_1t+a_0
+		\end{equation*}
+		Prove that $f(0)=a_0=det(A)$. Deduce that $A$ is invertible if and only if $a_0\neq 0$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{problem}
+		Solve following problems.
+		\begin{enumerate}[(a)]
+			\item Let $\mathsf{T}$ be a linear operator on a vector space $\mathsf{V}$ over the field $F$, and let $g(t)$ be a polynomial with coefficients from $F$. Prove that if $x$ is an eigenvector of $\mathsf{T}$ with corresponding eigenvalue $\lambda$, then $g(\mathsf{T}))(x)=g(\lambda)(x)$. That is, $x$ is an eigenvector of $g(\mathsf{T})$ with corresponding eigenvalue $g(\lambda)$.
+			\item State and prove a comparable result for matrices.
+			\item Verify (b) for the matrix $A$ in Exercise 3(a) with polynomial $g(t)=2t^2-t+1$, eigenvector $x=\begin{pmatrix}
+				2\\3
+			\end{pmatrix}$, and corresponding eigenvalue $\lambda=4$.
+		\end{enumerate}
+		Note that matrix $A$ in Exercise 3(a) is $\begin{pmatrix}
+			1&2\\
+			3&2
+		\end{pmatrix}$ for $F=R$.
+	\end{problem}
+	\begin{proof}
+	\end{proof}
+\end{document}
