@@ -1,0 +1,282 @@
+\documentclass[12pt]{book}
+
+\title{Analysis II}
+\author{Fall Semester\\MATH201}
+\date{}
+\usepackage{indentfirst}
+\usepackage{kotex}
+\usepackage{amssymb, amsthm, amsfonts, graphics, epsfig, fancyhdr, bm, mathrsfs, thmtools, hyperref, amsmath, mathrsfs}
+\usepackage[shortlabels]{enumitem}
+\setlength{\headheight}{28pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Ch7. Sequence and series of functions}
+\fancyfoot[C]{\thepage}
+
+\setcounter{chapter}{6}
+\setlength\parindent{12pt}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remarks}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\usepackage{chngcntr}
+\counterwithin{theorem}{chapter}
+
+\def\upint{\mathchoice%
+	{\mkern13mu\overline{\vphantom{\intop}\mkern7mu}\mkern-20mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	\int}
+\def\lowint{\mkern3mu\underline{\vphantom{\intop}\mkern7mu}\mkern-10mu\int}
+
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\qedsymbol}{}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\begin{document}
+	\chapter{Sequence and series of functions}
+	\listoftheorems
+	\newpage
+	\section*{Discussion of main problem}
+	\begin{definition}
+		Suppose $\left\{f_n\right\}$, $n=1$,$2$, $3$, $\ldots$, is a sequence of functions defined on a set $E$, and suppose that the sequence of numbers $\left\{f_n(x)\right\}$ converges for every $x\in E$. We can then define a function $f$ by \begin{equation}
+			f(x)=\lim_{n\rightarrow \infty}f_n(x)\quad (x\in E).
+		\end{equation}
+		Under these circumstances we say that $\left\{f_n\right\}$ converges on $E$ and that $f$ is the limit, or the limit function, of $\left\{f_n\right\}$. Sometimes we shall use a more descriptive terminology and shall say that ``$\left\{f_n\right\}$ converges to $f$ \textbf{pointwise} on $E$" if (1) holds. Similarly, if $\sum f_n(x)$ converges for every $x\in E$, and if we define $$f(x)=\displaystyle\sum_{n=1}^{\infty} f_n(x)\quad (x\in E),$$
+		the function $f$ is called the sum of the series $\sum f_n$.\\
+		To say that $f$ is continuous at $x$ means $$\lim_{t\rightarrow x}f(t)=f(x).$$
+		Hence, to ask whether the limit of a sequence of continuous functions is continuous is the same as to ask whether \begin{equation}
+			\lim_{t\rightarrow x}\lim_{n\rightarrow \infty}f_n(t)=\lim_{n\rightarrow \infty}\lim_{t\rightarrow x} f_n(t),
+		\end{equation}
+		$i.e.$, whether the order in which limit processes are carried out is \textbf{immaterial}. On the left side of (2), we first let $n\rightarrow \infty$, then $t \rightarrow x$; on the right side, $t\rightarrow x$ first, then $n\rightarrow \infty$.
+	\end{definition}
+	\newpage
+	\begin{example}
+		For $m=1$, $2$, $3$, $\ldots$, $n=1$, $2$, $3$, $\ldots$, let $$s_{m,\,n}=\dfrac{m}{m+n}.$$
+		Then, for every fixed $n$, $$\lim_{m\rightarrow \infty}s_{m,\,n}=1,$$ so that $$\lim_{n\rightarrow\infty}\lim_{m\rightarrow\infty}s_{m\,n}=1.$$ On the other hand, for every fixed $m$, $$\lim_{n\rightarrow\infty}s_{m\,n}=0,$$ so that $$\lim_{m\rightarrow \infty}\lim_{n\rightarrow\infty}s_{m,\,n}=0.$$
+	\end{example}
+	\vfill
+	\begin{example}
+		Let $$f_n(x)=\dfrac{x^2}{(1+x^2)^n}\quad (x \text{ is real; }n=0,~1,~2,~\ldots),$$
+		and consider $$f(x)=\displaystyle\sum_{n=0}^{\infty} f_n(x)=\displaystyle\sum_{n=0}^{\infty}\dfrac{x^2}{(1+x^2)^n}.$$
+		Prove that $f(x)$ is convergences, and may have a discontinuous sum.
+	\end{example}
+	\vfill
+	\newpage
+	\section*{Uniform convergence}
+	\begin{definition}
+		We say that a sequence of function $\left\{f_n\right\}$, $n=1$, $2$, $3$, $\ldots$, converges \textbf{uniformly} on $E$ to a function $f$ if for every $\varepsilon >0$ there is an integer $N$ such that $n\geq N$ implies $$|f_n(x)-f(x)|\leq\varepsilon$$ for all $x\in E$.
+		\\It is clear that every uniformly convergence sequence is pointwise convergent.($why?$)\\
+		We say that the series $\sum f_n(x)$ converges uniformly on $E$ if the sequence $\left\{s_n\right\}$ of \textbf{partial sums} defined by $$\displaystyle\sum_{i=1}^{n} f_i(x)=s_n(x)$$ converges uniformly on $E$.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		The sequence of functions $\left\{f_n\right\}$ defined on $E$, converges uniformly on $E$ if and only if for every $\varepsilon>0$ there exists an integer $N$ such that $m\geq N$, $n\geq N$, $x\in E$ implies $$|f_n(x)-f_m(x)|\leq\varepsilon.$$
+	\end{theorem}
+	\textbf{Note that suppose the cauchy condition holds, by Theorem 3.11, the sequence $\left\{f_n(x)\right\}$ converges.}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Suppose
+		$$\lim_{n\rightarrow\infty}f_n(x)=f(x)\quad (x\in E).$$
+		Put
+		$$M_n=\sup_{x\in E} |f_n(x)-f(x)|.$$
+		Then $f_n\rightarrow f$ uniformly on $E$ if and only if $M_n\rightarrow 0$ as $n\rightarrow \infty$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Suppose $\left\{f_n\right\}$ is a sequence of functions defined on $E$, and suppose $$|f_n(x)|\leq M_n\quad (x\in E,~n=1,~2,~3,~\ldots).$$
+		Then $\sum f_n$ converges uniformly on $E$ if $\sum M_n$ converges.
+	\end{theorem}
+	\textbf{Note that the converse is not asserted (and is, in fact, not true).}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Suppose $f_n\rightarrow f$ uniformly on a set $E$ in a metric space. Let $x$ be a limit point of $E$, and suppose that $$\lim_{t\rightarrow x} f_n(t)=A_n\quad (n=1,~2,~3,~\ldots).$$ Then $\left\{A_n\right\}$ converges, and $$\lim_{t\rightarrow x}f(t)=\lim_{n\rightarrow\infty}A_n.$$ $i.e.$, the conclusion is that $$\lim_{t\rightarrow x}\lim_{n\rightarrow \infty}f_n(t)=\lim_{n\rightarrow\infty}\lim_{t\rightarrow x} f_n(t).$$
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		If $\left\{f_n\right\}$ is a sequence of continuous functions on $E$, and if $f_n\rightarrow f$ uniformly on $E$, then $f$ is continuous on $E$.
+	\end{theorem}
+	\textbf{This is very important.}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Suppose $K$ is compact, and
+		\begin{enumerate}[(a)]
+			\item $\left\{f_n\right\}$ is a sequence of continuous functions on $K$, 
+			\item $\left\{f_n\right\}$ converges pointwise to a continuous function $f$ on $K$,
+			\item $f_n(x)\geq f_{n+1}(x)$ for all $x\in K$, $n=1,~2,~3,~\ldots,$.
+		\end{enumerate}
+		Then $f_n\rightarrow f$ uniformly on $K$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{definition}
+		If $X$ is a metric space, $\mathscr{C}(X)$ will denote the set of all complex valued, continuous, bounded functions with domain $X$.
+		We associate with each $f\in\mathscr{C}(X)$ its supremum norm $$\Vert f\rVert =\sup_{x\in X} |f(x)|.$$
+		Since $f$ is assumed to be bounded, $\Vert f \Vert<\infty$. It is obvious that $\Vert f\Vert=0$ only if $f(x)=0$ for every $x\in X$, that is, only if $f=0$. If $h=f+g$, then $$|h(x)|\leq |f(x)|+|g(x)|\leq \Vert f\Vert +\Vert g \Vert$$ for all $x\in X;$ hence $$\Vert f+g\Vert \leq \Vert f\Vert + \Vert g \Vert.$$
+		If we define the distance between $f\in\mathscr{C}(X)$ and $g\in\mathscr{C}(X)$ to be $\Vert f-g\Vert$, it follows that \textbf{Axioms 2.15} for a metric are satisfied.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		The above metric makes $\mathscr{C}(X)$ into a complete metric space.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\section*{Uniform convergence and integration}
+	\begin{theorem}
+		Let $\alpha$ be monotonically increasing on $[a,\,b]$. Suppose $f\in\mathscr{R}(\alpha)$ on $[a,\,b]$, for $n=1,~2,~3,~\ldots,$ and suppose $f_n\rightarrow f$ uniformly on $[a,\,b]$. Then $f\in\mathscr{R}(\alpha)$ on $[a,\,b]$, and $$\int_{a}^{b}f\,d\alpha=\lim_{n\rightarrow\infty} \int_{a}^{b} f_n\,d\alpha.$$ (The existence of the limit is part of the conclusion.)
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\vfill
+	\begin{corollary}
+		If $f_n\in\mathscr{R}(\alpha)$ on $[a,\,b]$ and if $$f(x)=\displaystyle\sum_{n=1}^\infty f_n(x)\quad (a\leq x\leq b),$$ the series converging uniformly on $[a,\,b]$, then $$\int_{a}^{b} f\,d\alpha =\displaystyle\sum_{n=1}^\infty \int_{a}^{b} f_n\,d\alpha.$$$i.e.$, the series may be integrated term by term.
+	\end{corollary}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\section*{Uniform convergence and differentiation}
+	\begin{theorem}
+		Suppose $\left\{f_n\right\}$ is a sequence of functions, differentiable on $[a,\,b]$ and such that $\left\{f_n(x_0)\right\}$ converges for some point $x_0$ on $[a,\,b]$. If $\left\{f_n'\right\}$ converges uniformly on $[a,\,b]$, then $\left\{f_n\right\}$ converges uniformly on $[a,\,b]$, to a function $f$, and $$f\,'(x)=\lim_{n\rightarrow\infty}f_n'(x)\quad(a\leq x\leq b).$$
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		There exists a real continuous function on the real line which is nowhere differentiable.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\section*{Equicontinuous familites of functions}
+	\begin{definition}
+		Let $\left\{f_n\right\}$ be a sequence of functions defined on a set $E$. We say that $\left\{f_n\right\}$ is \textbf{pointwise bounded} on $E$ if the sequence $\left\{f_n(x)\right\}$ is bounded for every $x\in E$, that is, if there exists a finite-valued function $\phi$ defined on $E$ such that $$|f_n(x)|<\phi(x)\quad (x\in E, n=1,~2,~3,~\ldots).$$ We say that $\left\{f_n\right\}$ is uniformly bounded on $E$ if there exists a number $M$ such that $$|f_n(x)|<M\quad (x\in E,~n=1,~2,~3,~\ldots).$$
+	\end{definition}
+	\newpage
+	\begin{definition}
+		A family $\mathscr{F}$ of complex functions $f$ defined on a set $E$ in a metric space $X$ is said to be equicontinuous on $E$ if for every $\varepsilon>0$ there exists a $\delta>0$ such that $$|f(x)-f(y)|<\varepsilon$$ whenever $d(x,\,y)<\delta$, $x\in E$, $y\in E$, and $f\in\mathscr{F}$. Here $d$ denotes the metric of $X$.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		If $\left\{f_n\right\}$ is a pointwise bounded sequence of complex functions on a countable set $E$, then $\left\{f_n\right\}$ has a subsequence $\left\{f_{n_k}\right\}$ such that $\left\{f_{n_k}(x)\right\}$ converges for every $x\in E$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		If $K$ is a compact metric space, if $f_n\in\mathscr{C}(K)$ for $n=1,~2,~3,~\ldots,$ and if $\left\{f_n\right\}$ converges uniformly on $K$, then $\left\{f_n\right\}$ is equicontinuous on $K$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		If $K$ is compact, if $f_n\in\mathscr{C}(K)$ for $n=1,~2,~3,~\ldots,$ and if $\left\{f_n\right\}$ is pointwise bounded and equicontinuous on $K$, then \begin{enumerate}[(a)]
+			\item $\left\{f_n\right\}$ is uniformly bounded on $K$,
+			\item $\left\{f_n\right\}$ contains a uniformly convergent subsequence.
+		\end{enumerate}
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\section*{The stone-weierstrass theorem}
+	\begin{theorem}
+		If $f$ is a continuous complex function on $[a,\,b]$, there exists a sequence of polynomials $P_n$ such that $$\lim_{n\rightarrow \infty}P_n(x)=f(x)$$ uniformly on $[a,\,b]$. If $f$ is real, the $P_n$ may be taken real.
+	\end{theorem}
+	This is the form in which the theorem was originally discovered by weierstrass.
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{proof}[Continued...]
+	\end{proof}
+	\vfill
+	\begin{corollary}
+		For every interval $[-a,\,a]$ there is a sequence of real polynomials $P_n$ such that $P_n(0)=0$ and such that $$\lim_{n\rightarrow \infty} P_n(x)=|x|$$ uniformly on $[-a,\,a].$
+	\end{corollary}
+	\begin{proof}
+	\end{proof}
+	\vfill
+	\newpage
+	\begin{definition}
+		A family $\mathscr{A}$ of complex functions defined on a set $E$ is said to be an \textbf{algebra} if (i) $f+g\in\mathscr{A}$. (ii) $fg\in\mathscr{A}$. (iii) $cf\in\mathscr{A}$ for all $f\in\mathscr{A}$, $g\in\mathscr{A}$, and for all complex constants $c$, that is, if $\mathscr{A}$ is closed under addition, multiplication, and scalar multiplication. We shall also have to consider algebras of real functions; in this case, (iii) is of course only required to hold for all real $c$.\\
+		If $\mathscr{A}$ has the property that $f\in\mathscr{A}$ whenever $f_n\in\mathscr{A}\quad(n=1,~2,~3,~\ldots)$ and $f_n\rightarrow f$ uniformly on $E$, then $\mathscr{A}$ is said to be uniformly closed.\\
+		Let $\mathscr{B}$ be the set of all functions which are limits of uniformly convergent sequences of members of $\mathscr{A}$. Then $\mathscr{B}$ is called the \textbf{uniform closure} of $\mathscr{A}$.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		Let $\mathscr{B}$ be the uniform closure of an algebra $\mathscr{A}$ of bounded functions. Then $\mathscr{B}$ is a uniformly closed algebra.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{definition}
+		Let $\mathscr{A}$ be a family of functions on a set $E$. Then $\mathscr{A}$ is said to \textbf{separate points} on $E$ if to every pair of distincts point $x_1$, $x_2\in E$ there corresponds a function $f\in\mathscr{A}$ such that $f(x_1)\neq f(x_2).$ \\
+		If to each $x\in E$ there corresponds a function $g\in \mathscr{A}$ such that $g(x)\neq 0$, we say that $\mathscr{A}$ vanishes at no point of $E$. \\
+		The algebra of all polynomials in one variable clearly has these properties on $\R$. An example of an algebra which does not separate points is the set of all even polynomials, say on $[-1,\,1]$, since $f(-x)=f(x)$ for every even function $f$.
+	\end{definition}
+	\newpage
+	\begin{theorem}
+		Suppose $\mathscr{A}$ is an algebra of functions on a set $E$, $\mathscr{A}$ separates points on $E$, and $\mathscr{A}$ vanishes at no point of $E$. Suppose $x_1$, $x_2$ are distinct points of $E$, and $c_1$, $c_2$ are constants (real if $\mathscr{A}$ is a real algebra). Then $\mathscr{A}$ contains a function $f$ such that $$f(x_1)=c_1,\quad f(x_2)=c_2.$$
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{lemma}
+		If $f\in\mathscr{R}$, then $|f|\in\mathscr{R}$.
+	\end{lemma}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{lemma}
+		If $f\in\mathscr{R}$ and $g\in\mathscr{R}$, then $\max(f,\,g)\in\mathscr{R}$ and $\min(f,\,g)\in\mathscr{R}$.
+	\end{lemma}
+	\begin{proof}
+	\end{proof}
+	\vfill
+	\begin{lemma}
+		Given a real function $f$, continuous on $K$, a point $x\in K$, and $\varepsilon >0$, there exists a function $g_x\in\mathscr{B}$ such that $g_x(x)=f(x)$ and $$g_x(t)>f(t)-\varepsilon\quad (t\in K).$$
+	\end{lemma}
+	\begin{proof}
+	\end{proof}
+	\vfill
+	\vfill
+	\newpage
+	\begin{lemma}
+		Given a real function $f$, continuous on $K$, and $\varepsilon>0$, there exists a function $h\in\mathscr{B}$ such that $$|h(x)-f(x)|<\varepsilon\quad (x\in K).$$
+		Since $\mathscr{B}$ is uniformly closed, this statement is equivalent to the conclusion of the theorem.
+	\end{lemma}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Let $\mathscr{A}$ be an algebra of real continuous functions on a compact set $K$. If $\mathscr{A}$ separates points on $K$ and if $\mathscr{A}$ vanishes at no point of $K$, then the uniform closure $\mathscr{B}$ of $\mathscr{A}$ consists of all real continuous functions on $K$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{theorem}
+		Suppose $\mathscr{A}$ is a self-adjoint algebra of complex continuous functions on a compact set $K$, $\mathscr{A}$ separates points on $K$, and $\mathscr{A}$ vanishes at no point of $K$. Then the uniform closure $\mathscr{B}$ of $\mathscr{A}$ consists of all complex continuous functions on $K$. $i.e.$, $\mathscr{A}$ is dense $\mathscr{C}(K)$.
+	\end{theorem}
+	\begin{proof}
+	\end{proof}
+\end{document}
