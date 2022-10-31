@@ -4,6 +4,8 @@ import torchvision
 import torchvision.transforms as transforms
 # from vgg16_full import *
 from resnet50_skeleton import *
+from torchsummary import summary
+from tqdm import tqdm
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 # device = torch.device('cpu')
@@ -52,8 +54,8 @@ model.load_state_dict(checkpoint)
 
 # Train Model
 # Hyper-parameters
-num_epochs = 1  # students should train 1 epoch because they will use cpu
-learning_rate = 0.001
+num_epochs = 20  # students should train 1 epoch because they will use cpu
+learning_rate = 1e-5
 
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()
@@ -68,12 +70,13 @@ def update_lr(optimizer, lr):
 total_step = len(train_loader)
 current_lr = learning_rate
 
+summary(model, (3, 32, 32))
 for epoch in range(num_epochs):
 
     model.train()
     train_loss = 0
 
-    for batch_index, (images, labels) in enumerate(train_loader):
+    for batch_index, (images, labels) in enumerate(tqdm(train_loader)):
         # print(images.shape)
         images = images.to(device)  # "images" = "inputs"
         labels = labels.to(device)  # "labels" = "targets"

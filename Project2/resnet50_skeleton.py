@@ -32,6 +32,9 @@ class ResidualBlock(nn.Module):
                 ##########################################
                 ############## fill in here (20 points)
                 # Hint : use these functions (conv1x1, conv3x3)
+                conv1x1(in_channels, middle_channels, 2, 0),
+                conv3x3(middle_channels, middle_channels, 1, 1),
+                conv1x1(middle_channels, out_channels, 1, 0)
                 #########################################
             )
             self.downsize = conv1x1(in_channels, out_channels, 2, 0)
@@ -41,6 +44,9 @@ class ResidualBlock(nn.Module):
                 ##########################################
                 ############# fill in here (20 points)
                 #########################################
+                conv1x1(in_channels, middle_channels, 1, 0),
+                conv3x3(middle_channels, middle_channels, 1, 1),
+                conv1x1(middle_channels, out_channels, 1, 0)
             )
             self.make_equal_channel = conv1x1(in_channels, out_channels, 1, 0)
 
@@ -64,36 +70,46 @@ class ResidualBlock(nn.Module):
 # (blank : #blank#, 1 points per blank )
 # Implement the code.
 class ResNet50_layer4(nn.Module):
-    def __init__(self, num_classes= #blank# ): # Hint : How many classes in Cifar-10 dataset?
+    def __init__(self, num_classes= 10 ): # Hint : How many classes in Cifar-10 dataset?
         super(ResNet50_layer4, self).__init__()
         self.layer1 = nn.Sequential(
-            nn.Conv2d(#blank#, #blank#, #blank#, #blank#, #blank# ),
+            nn.Conv2d(in_channels = 3, out_channels = 64, kernel_size = 7, stride = 2, padding = 0),
                 # Hint : Through this conv-layer, the input image size is halved.
                 #        Consider stride, kernel size, padding and input & output channel sizes.
             nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(#blank#, #blank#, #blank#)
+            nn.MaxPool2d(kernel_size = 3, stride = 2, padding = 0)
         )
         self.layer2 = nn.Sequential(
-            ResidualBlock(#blank#, #blank#, #blank#, #blank#),
-            ResidualBlock(#blank#, #blank#, #blank#, #blank#),
-            ResidualBlock(#blank#, #blank#,#blank#, #blank#)
+            ResidualBlock(64, 64, 256, downsample = False),
+            ResidualBlock(256, 64, 256, downsample = False),
+            ResidualBlock(256, 64, 256, downsample = True)
         )
         self.layer3 = nn.Sequential(
             ##########################################
             ############# fill in here (20 points)
             ####### you can refer to the 'layer2' above
+            ResidualBlock(256, 128, 512, downsample = False),
+            ResidualBlock(512, 128, 512, downsample = False),
+            ResidualBlock(512, 128, 512, downsample = False),
+            ResidualBlock(512, 128, 512, downsample = True)
             #########################################
         )
         self.layer4 = nn.Sequential(
             ##########################################
             ############# fill in here (20 points)
             ####### you can refer to the 'layer2' above
+            ResidualBlock(512, 256, 1024, downsample = False),
+            ResidualBlock(1024, 256, 1024, downsample = False),
+            ResidualBlock(1024, 256, 1024, downsample = False),
+            ResidualBlock(1024, 256, 1024, downsample = False),
+            ResidualBlock(1024, 256, 1024, downsample = False),
+            ResidualBlock(1024, 256, 1024, downsample = False),
             #########################################
         )
 
-        self.fc = nn.Linear(#blank#, #blank#) # Hint : Think about the reason why fc layer is needed
-        self.avgpool = nn.AvgPool2d(#blank#, #blank#)
+        self.fc = nn.Linear(1024, num_classes) # Hint : Think about the reason why fc layer is needed
+        self.avgpool = nn.AvgPool2d(kernel_size = 2, stride = 1, padding = 0)
 
         for m in self.modules():
             if isinstance(m, nn.Linear):
