@@ -32,8 +32,8 @@ class ResidualBlock(nn.Module):
                 ##########################################
                 ############## fill in here (20 points)
                 # Hint : use these functions (conv1x1, conv3x3)
-                conv1x1(in_channels, middle_channels, 2, 0),
-                conv3x3(middle_channels, middle_channels, 1, 1),
+                conv1x1(in_channels, middle_channels, 2, 0), # We perform downsamping, so stride will be 2
+                conv3x3(middle_channels, middle_channels, 1, 1), # To preserve size, padding:1 
                 conv1x1(middle_channels, out_channels, 1, 0)
                 #########################################
             )
@@ -43,9 +43,9 @@ class ResidualBlock(nn.Module):
             self.layer = nn.Sequential(
                 ##########################################
                 ############# fill in here (20 points)
-                #########################################
+                #########################################image.png
                 conv1x1(in_channels, middle_channels, 1, 0),
-                conv3x3(middle_channels, middle_channels, 1, 1),
+                conv3x3(middle_channels, middle_channels, 1, 1), # To preserve size, padding:1 
                 conv1x1(middle_channels, out_channels, 1, 0)
             )
             self.make_equal_channel = conv1x1(in_channels, out_channels, 1, 0)
@@ -104,7 +104,7 @@ class ResNet50_layer4(nn.Module):
             ResidualBlock(1024, 256, 1024, downsample = False),
             ResidualBlock(1024, 256, 1024, downsample = False),
             ResidualBlock(1024, 256, 1024, downsample = False),
-            ResidualBlock(1024, 256, 1024, downsample = False),
+            ResidualBlock(1024, 256, 1024, downsample = False)
             #########################################
         )
 

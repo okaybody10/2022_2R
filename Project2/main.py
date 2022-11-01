@@ -6,6 +6,9 @@ import torchvision.transforms as transforms
 from resnet50_skeleton import *
 from torchsummary import summary
 from tqdm import tqdm
+from tensorboardX import SummaryWriter
+
+summaries = SummaryWriter()
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 # device = torch.device('cpu')
@@ -44,17 +47,17 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 ###########################################################
 # Choose model
 model = ResNet50_layer4().to(device)
-PATH = './resnet50_epoch285.ckpt' # test acc would be almost 80
+# PATH = './resnet50_epoch285.ckpt' # test acc would be almost 80
 
 # model = vgg16().to(device)
 # PATH = './vgg16_epoch250.ckpt'  # test acc would be almost 85
 ##############################################################
-checkpoint = torch.load(PATH)
-model.load_state_dict(checkpoint)
+# checkpoint = torch.load(PATH)
+# model.load_state_dict(checkpoint)
 
 # Train Model
 # Hyper-parameters
-num_epochs = 20  # students should train 1 epoch because they will use cpu
+num_epochs = 500  # students should train 1 epoch because they will use cpu
 learning_rate = 1e-5
 
 # Loss and optimizer
@@ -95,12 +98,25 @@ for epoch in range(num_epochs):
         if (batch_index + 1) % 100 == 0:
             print("Epoch [{}/{}], Step [{}/{}] Loss: {:.4f}"
                   .format(epoch + 1, num_epochs, batch_index + 1, total_step, train_loss / (batch_index + 1)))
+            with torch.no_grad() :
+                correct = 0
+                total = 0
+                for images, labels in test_loader:
+                    images = images.to(device)
+                    labels = labels.to(device)
+                    outputs = model(images)
+                    _, predicted = torch.max(outputs.data, 1)
+                    total += labels.size(0)
+                    correct += (predicted == labels).sum().item()
+            summaries.add_scalar('loss', train_loss / (batch_index + 1), epoch * len(train_loader) + batch_index)
+            summaries.add_scalar('validation', 100 * correct / total, epoch * len(train_loader) + batch_index)
 
     # Decay learning rate
     if (epoch + 1) % 20 == 0:
         current_lr /= 3
         update_lr(optimizer, current_lr)
         torch.save(model.state_dict(), './resnet50_epoch' + str(epoch+1)+'.ckpt')
+    
 
 # Save the model checkpoint
 torch.save(model.state_dict(), './resnet50_final.ckpt')
