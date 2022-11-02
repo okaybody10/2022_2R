@@ -73,7 +73,8 @@ class ResNet50_layer4(nn.Module):
     def __init__(self, num_classes= 10 ): # Hint : How many classes in Cifar-10 dataset?
         super(ResNet50_layer4, self).__init__()
         self.layer1 = nn.Sequential(
-            nn.Conv2d(in_channels = 3, out_channels = 64, kernel_size = 7, stride = 2, padding = 0),
+            nn.Conv2d(in_channels = 3, out_channels = 64, 
+                      kernel_size = 7, stride = 2, padding = 0),
                 # Hint : Through this conv-layer, the input image size is halved.
                 #        Consider stride, kernel size, padding and input & output channel sizes.
             nn.BatchNorm2d(64),
@@ -116,6 +117,7 @@ class ResNet50_layer4(nn.Module):
                 nn.init.xavier_uniform_(m.weight.data)
             elif isinstance(m, nn.Conv2d):
                 nn.init.xavier_uniform_(m.weight.data)
+                # nn.init.kaiming_uniform_(m.weight.data)
 
     def forward(self, x):
 
