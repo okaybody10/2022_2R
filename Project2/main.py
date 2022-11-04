@@ -47,19 +47,19 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 ###########################################################
 # Choose model
 model = ResNet50_layer4().to(device)
-PATH = './resnet50_epoch285.ckpt' # test acc would be almost 80
+# PATH = './resnet50_epoch285.ckpt' # test acc would be almost 80
 
 # model = vgg16().to(device)
 # PATH = './vgg16_epoch250.ckpt'  # test acc would be almost 85
 ##############################################################
-checkpoint = torch.load(PATH)
-model.load_state_dict(checkpoint)
+# checkpoint = torch.load(PATH)
+# model.load_state_dict(checkpoint)
 
 # Train Model
 # Hyper-parameters
 # num_epochs = 20
 num_epochs = 1  # students should train 1 epoch because they will use cpu
-learning_rate = 1e-5
+learning_rate = 1e-4
 
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()
@@ -74,7 +74,7 @@ def update_lr(optimizer, lr):
 total_step = len(train_loader)
 current_lr = learning_rate
 
-summary(model, (3, 32, 32))
+# summary(model, (3, 32, 32))
 for epoch in range(num_epochs):
 
     model.train()
@@ -113,7 +113,7 @@ for epoch in range(num_epochs):
             # summaries.add_scalar('validation', 100 * correct / total, epoch * len(train_loader) + batch_index)
 
     # Decay learning rate
-    if (epoch + 1) % 20 == 0:
+    if (epoch + 1) % 50 == 0:
         current_lr /= 3
         update_lr(optimizer, current_lr)
         torch.save(model.state_dict(), './resnet50_epoch' + str(epoch+1)+'.ckpt')
