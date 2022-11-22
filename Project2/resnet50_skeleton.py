@@ -21,7 +21,7 @@ def conv3x3(in_channels, out_channels, stride, padding):
 
 ###########################################################################
 # Question 1 : Implement the "bottle neck building block" part.
-# Hint : Think about difference between downsample True and False. How we make the difference by code?
+# hint : Think about difference between downsample True and False. How we make the difference by code?
 class ResidualBlock(nn.Module):
     def __init__(self, in_channels, middle_channels, out_channels, downsample=False):
         super(ResidualBlock, self).__init__()
@@ -31,7 +31,7 @@ class ResidualBlock(nn.Module):
             self.layer = nn.Sequential(
                 ##########################################
                 ############## fill in here (20 points)
-                # Hint : use these functions (conv1x1, conv3x3)
+                # hint : use these functions (conv1x1, conv3x3)
                 conv1x1(in_channels, middle_channels, 2, 0), # We perform downsamping, so stride will be 2
                 conv3x3(middle_channels, middle_channels, 1, 1), # To preserve size, padding:1 
                 conv1x1(middle_channels, out_channels, 1, 0)
@@ -70,12 +70,12 @@ class ResidualBlock(nn.Module):
 # (blank : #blank#, 1 points per blank )
 # Implement the code.
 class ResNet50_layer4(nn.Module):
-    def __init__(self, num_classes= 10 ): # Hint : How many classes in Cifar-10 dataset?
+    def __init__(self, num_classes= 10 ): # hint : How many classes in Cifar-10 dataset?
         super(ResNet50_layer4, self).__init__()
         self.layer1 = nn.Sequential(
             nn.Conv2d(in_channels = 3, out_channels = 64, 
                       kernel_size = 7, stride = 2, padding = 0),
-                # Hint : Through this conv-layer, the input image size is halved.
+                # hint : Through this conv-layer, the input image size is halved.
                 #        Consider stride, kernel size, padding and input & output channel sizes.
             nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
@@ -109,7 +109,7 @@ class ResNet50_layer4(nn.Module):
             #########################################
         )
 
-        self.fc = nn.Linear(1024, num_classes) # Hint : Think about the reason why fc layer is needed
+        self.fc = nn.Linear(1024, num_classes) # hint : Think about the reason why fc layer is needed
         self.avgpool = nn.AvgPool2d(kernel_size = 2, stride = 1, padding = 0)
 
         for m in self.modules():

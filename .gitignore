@@ -1,0 +1,6 @@
+/VOC2012/
+/Segproj/car/
+/Segproj/children/
+*.tar
+*.gz
+Project3_revised_211201/trained_model/*.pth
