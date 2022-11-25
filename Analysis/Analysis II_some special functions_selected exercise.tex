@@ -1,0 +1,233 @@
+\documentclass[12pt]{book}
+
+\title{Analysis II}
+\author{Fall Semester\\MATH201}
+\date{}
+\usepackage{indentfirst}
+\usepackage{kotex}
+\usepackage{amssymb, amsthm, amsfonts, graphics, epsfig, fancyhdr, bm, mathrsfs, thmtools, hyperref, amsmath, inputenc, mathrsfs, mathtools, arydshln}
+\usepackage[shortlabels]{enumitem}
+\setlength{\headheight}{28pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Written by Sung Jae Hyuk}
+\fancyhead[R]{Ch8. Some Special Functions}
+\fancyfoot[C]{\thepage}
+
+\setcounter{chapter}{7}
+\setlength\parindent{12pt}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remarks}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{exe}{Exercise}
+\newtheorem{sect}{Sec}
+
+\usepackage{chngcntr}
+
+\def\upint{\mathchoice%
+	{\mkern13mu\overline{\vphantom{\intop}\mkern7mu}\mkern-20mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	{\mkern7mu\overline{\vphantom{\intop}\mkern7mu}\mkern-14mu}%
+	\int}
+\def\lowint{\mkern3mu\underline{\vphantom{\intop}\mkern7mu}\mkern-10mu\int}
+
+\renewcommand\arraystretch{1.3}
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\thesect}{2.\arabic{sect}}
+\renewcommand{\thetheorem}{3.\arabic{theorem}}
+\renewcommand{\qedsymbol}{}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\makeatletter
+\newcommand{\chapterauthor}[1]{%
+	{\parindent0pt\vspace*{-25pt}%
+	\linespread{1.1}\large\scshape#1%
+	\par\nobreak\vspace*{35pt}}
+	\@afterheading%
+}
+\newcommand{\chapterother}[1]{%
+	{\parindent0pt\vspace*{-25pt}%
+	\linespread{1.1}#1%
+	\par\nobreak\vspace*{35pt}}
+	\@afterheading%
+}
+\makeatother
+
+\begin{document}
+	\chapter{Some Special Functions\\Selected Exercise}
+	\chapterauthor{Sung Jae Hyuk}
+	\chapterother{Junior in Korea university\\ Majoring in computer science \& mathematics\\Email: okaybody10@korea.ac.kr}
+	\listoftheorems[title = List of Exercise]
+	\newpage
+	\begin{lemma}
+		Let $P_n(x)$ be set of polynomials of degree $3n+1$. Suppose $f(x)=e^{-1/x^2}$ for $x\neq 0$, then
+		\begin{equation*}
+			\displaystyle\lim_{x\rightarrow 0} g\left(\dfrac{1}{x}\right)f(x)=0
+		\end{equation*} where $g \in P_n(x)$.
+	\end{lemma}
+	\begin{proof}
+		Let $x=\dfrac{1}{t}$. It is easy to show that \begin{equation*}
+			\displaystyle\lim_{x\rightarrow 0}g\left(\dfrac{1}{x}\right)f(x)=0
+		\end{equation*} if and only if
+		\begin{equation*}
+			\displaystyle\lim_{t\rightarrow\infty}g(t)f\left(\dfrac{1}{t}\right)=\lim_{t\rightarrow-\infty}g(t)f\left(\dfrac{1}{t}\right)=0
+		\end{equation*} using $\varepsilon-\delta$ argument.\\
+		So, we will show that $\displaystyle\lim_{t\rightarrow \infty}g(t)f\left(\dfrac{1}{t}\right)=L.$\\
+		As $\displaystyle\lim_{t\rightarrow \infty}\left\{t^{3n+2}-g(t)\right\}=\infty$, there exists $C>0$ such that $\left\vert g(t)\right\rvert \leq C\,t^{3n+2}$ for all $t> 0$.
+		\begin{align*}
+			|g(t)|\leq C\,t^{3n+2} &\Leftrightarrow -C\,t^{3n+2}\leq g(t) \leq C\,t^{3n+2}\\
+			&\Leftrightarrow -C\,t^{3n+2}e^{-t^2}\leq g(t)f\left(\dfrac{1}{t}\right) \leq C\,t^{3n+2}e^{-t^2}\\
+			&\Rightarrow \displaystyle\lim_{t\rightarrow \infty}-C\,t^{3n+2}e^{-t^2}\leq \lim_{t\rightarrow \infty}g(t)f\left(\dfrac{1}{t}\right) \leq \lim_{t\rightarrow\infty}C\,t^{3n+2}e^{-t^2}
+		\end{align*}
+		By squeeze theorem, $\displaystyle\lim_{ t\rightarrow \infty} g(t)f\left(\dfrac{1}{t}\right)=0$.\\
+		The case $t\rightarrow-\infty$ is analogous, and proof is completed.
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Define
+		\begin{equation*}
+			f(x) = 
+			\begin{cases}
+				e^{-1/x^2}&(x\neq 0),\\
+				0&(x=0).
+			\end{cases}
+		\end{equation*}
+	Prove that $f$ has derivatives of all orders at $x=0$, and that $f^{(n)}(0)=0$ for $n=1$, $2$, $3$, $\ldots$.
+	\end{exe}
+	\begin{proof}
+		Let $f(x)=e^{-1/x^2}$ for all $x\neq0$, and $f(0)=0$.\\
+		Then, we are enough to show that
+		\begin{equation*}
+			f^{(n)}(x)=
+				\begin{cases}
+					f(x)Q_n(x)&\quad (x>0)\\
+					0&\quad (x=0)
+				\end{cases}
+		\end{equation*}
+		where $P_n(x)$ a polynomial function of degree $n$, and $Q_n(x)=P_{3n}\left(\dfrac{1}{x}\right)$ fulfills the recursive definition
+		\begin{align*}
+			Q_0(x)&=1 \\
+			Q_n(x)&=\dfrac{2}{x^3}Q_{n-1}(x)+Q_{n-1}'(x)
+		\end{align*}
+		Let us use mathematical induction.\\
+		It is easy to show when $n=1$.\\
+		Assume $n=k$ is true.\\
+		Then, $f^{(k+1)}(x)$ is well-defined for $x\neq 0$.\\
+		More Specifically,
+		\begin{align*}
+			f^{(k+1)}(x)&=\left\{e^{-1/x^2}\right\}'Q_k(x) + e^{-1/x^2}\left\{Q_k(x)\right\}'\\
+			&=\dfrac{2}{x^3}\,e^{-1/x^2}Q_k(x)+e^{-1/x^2}\,Q_{k}'(x)\\
+			&=e^{-1/x^2}\left\{\dfrac{2}{x^3}Q_k(x)+Q_k'(x)\right\}\\
+			&=e^{-1/x^2}Q_{k+1}(x)\\
+			&=f(x)Q_{k+1}(x)
+		\end{align*}
+		So if we show $f^{(k+1)}(0)=0$, then we can say that $f^{(k+1)}$ is also differentiable for $x\in\R$.\\
+		By definition,
+		\begin{flalign*}
+			&&f^{(k+1)}(0)&=\displaystyle\lim_{x\rightarrow0}\dfrac{f^{(k)}(x)-f^{(k)}(0)}{x-0}&\\
+			&&&=\lim_{x\rightarrow0}\dfrac{f^{(k)}(x)}{x}&(\because~f^{(k)}(0)=0)\\
+			&&&=\lim_{x\rightarrow0}f(x)\dfrac{Q_k(x)}{x}\pagebreak\\
+			&&&=\lim_{x\rightarrow0} f(x)P_{3k+1}\left(\dfrac{1}{x}\right)&(\because~Q_k(x)=P_{3k}\left(\dfrac{1}{x}\right))\\
+			&&&=0&(\because~\text{By Lemma } 1)
+		\end{flalign*}
+		Hence $f^{(k+1)}(0)=0$, $f^{(k+1)}$ is also differentiable for $x\in\R$.\\
+		By the principle of mathematical induction, $f(x)$ is infinitely differentiable for $x\in\R$.
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Let $a_{ij}$ be the number in the $i$th row and $j$th column of the array
+		\begin{equation*}
+			\begin{matrix*}[r]
+				-1&0&0&0&\cdots\\
+				\frac{1}{2}&-1&0&0&\cdots\\
+				\frac{1}{4}&\frac{1}{2}&-1&0&\cdots\\
+				\frac{1}{8}&\frac{1}{4}&\frac{1}{2}&-1&\cdots\\
+				\hdashline[2pt/2pt]
+			\end{matrix*}
+		\end{equation*}
+		so that
+		\begin{equation*}
+			a_{ij}=\begin{cases}
+				0&(i<j),\\
+				-1&(i=j),\\
+				2^{j-i}&(i>j).
+			\end{cases}
+		\end{equation*}
+		Prove that
+		\begin{equation*}
+			\sum_i \sum_j a_{ij}=-2,\qquad \sum_j\sum_i a_{ij}=0.
+		\end{equation*}
+	\end{exe}
+	\begin{proof}
+		First, fix $i$, and define $\sum_j a_{ij}=b_i$.\\
+		By definition, $a_{ij}=0$ if $i<j$, we are enough to calculate the value for $i\geq j$.\\
+		As $a_{ij}=2^{j-i}$ if $i>j$, $$b_i=\sum_{j=1} ^ {i-1} 2^{j-i}-1=\dfrac{2^{1-i}(2^{i-1}-1)}{2-1}-1=-2^{1-i}.$$
+		Thus $$\displaystyle\sum_i \sum_j a_{ij}=\sum_i b_i=\sum_i -2^{1-i}=-2.$$
+		In the same way, fix $j$, and define $\sum_i a_{ij}=c_j$.\\
+		Then, $$c_j=\sum_{i=j+1}^{\infty} 2^{j-i} -1=\dfrac{1/2}{1-1/2}-1=1-1=0.$$
+		Thus, $$\displaystyle\sum_j \sum_i a_{ij}=\sum_j c_j = 0.$$
+	\end{proof}
+	\newpage
+	\begin{exe}
+		Prove that
+		\begin{equation*}
+			\sum_i \sum_j a_{ij}=\sum_j\sum_i a_{ij}
+		\end{equation*}
+		if $a_{ij}\geq0$ for all $i$ and $j$ (the case $+\infty=+\infty$ may occur).
+	\end{exe}
+	\begin{proof}
+		First,  x
+	\end{proof}
+	\newpage
+	\setcounter{exe}{10}
+	\begin{exe}
+		Suppose $f\in\mathscr{R}$ on $[0,\ A]$ for all $A<\infty$, and $f(x)\rightarrow 1$ as $x\rightarrow +\infty$. Prove that $$\displaystyle\lim_{t\rightarrow 0}\ t\int_{0}^{\infty} e^{-tx}f(x)\,dx=1\qquad (t>0).$$
+	\end{exe}
+	\begin{proof}
+		Note that $f\in\mathscr{R}$ on $[0,\ A]$ for all $A<\infty$, so we don't guarantee about existence of $\displaystyle\int_A^\infty f(x)dx$.\\
+		Also we can guarantee about $\displaystyle\int_0 ^A |f(x)| dx$, let assume this value $k$.\\
+		Since $h(x)=e^{-tx}$ be strictly increasing function for every $t>0$,$$\left\vert\int_0^A e^{-tx}f(x) dx\right\vert \leq \int_0^A e^{-tx}|f(x)|dx\leq e^{-tA}\int_0^A |f(x)|dx=ke^{-tA}$$by \textbf{Theorem 6.12(b), 6.13}.\\
+		By above, we can easily know that $$\lim_{t\rightarrow 0} t\int_0^A e^{-tx}f(x)dx=0,$$ so if we show that $\displaystyle\lim_{t\rightarrow 0}\int_A^\infty e^{-tx}f(x)dx$ exists, which value is $1$, proof is completed.\\
+		Let $\varepsilon>0$ given.\\
+		Since $f(x)\rightarrow 1$ as $x\rightarrow\infty$, there exists $t$ s.t. $|f(x)-1|\leq \varepsilon$ for all $x\geq t$.\\
+		Letting $A=t$, then $1-\varepsilon\leq f(x)\leq 1+\varepsilon$ for all $x>A$, and $f\in\mathscr{R}$ on $[0,\,A]$.\\
+		Also $h(x)=e^{-tx}$ goes to $0$ as $x\rightarrow \infty$ for $t>0$, $\displaystyle \int_a^\infty Kte^{-tx}dx$ well defined, and value is $Ke^{-ta}$.
+		Thus $1-\varepsilon\leq f(x)\leq 1+\varepsilon$ for every $x>A$, \begin{equation}
+			(1-\varepsilon)e^{-tA}\leq\underline{\int_A^\infty} te^{-tx}f(x)dx\leq\overline{\int_A^\infty} te^{-tx}f(x)dx\leq (1+\varepsilon)e^{-tA}
+		\end{equation}
+		Letting $t\rightarrow 0$, $e^{-tA}$ goes to $1$, so left and right side on equation (1) goes to $1-\varepsilon$ and $1+\varepsilon$, respectively.\\
+		This shows that $\displaystyle\int_a^b te^{-tx}f(x)dx=1$, and completes the proof.
+	\end{proof}
+	\newpage
+	\setcounter{exe}{12}
+	\begin{exe}
+		Put $f(x)=x$ if $0\leq x < 2\pi$, and apply Parseval's theorem to conclude that $$\displaystyle\sum_{n=1}^{\infty} \dfrac{1}{n^2}=\dfrac{\pi^2}{6}.$$
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\begin{exe}
+		If $f(x)=(\pi-|x|)^2$ on $[-\pi,~\pi]$, prove that $$f(x)=\dfrac{\pi^2}{3}+\displaystyle\sum_{n=1}^\infty \dfrac{4}{n^2}\,\cos nx$$ and deduce that $$\displaystyle\sum_{n=1}^\infty \dfrac{1}{n^2}=\dfrac{\pi^2}{6},\qquad \sum_{n=1}^{\infty} \dfrac{1}{n^4}=\dfrac{\pi^4}{90}.$$
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+	\newpage
+	\setcounter{exe}{21}
+	\begin{exe}
+		If $\alpha$ is real and $-1<x<1$, prove Newton's binomial theorem $$(1+x)^\alpha=1+\displaystyle\sum_{n=1}^\infty \dfrac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{n!}x^n.$$
+		$Hint:$ Denote the right side by $f(x)$. Prove that the series converges.\\
+		Prove that $$(1+x)f\,'(x)=\alpha f(x)$$ and solve this differential equation.\\
+		Show also that $$(1-x)^{-\alpha}=\displaystyle\sum_{n=0}^\infty \dfrac{\Gamma(n+\alpha)}{n!\,\Gamma(\alpha)} x^n$$ if $-1<x<1$ and $\alpha>0$.
+	\end{exe}
+	\begin{proof}
+	\end{proof}
+\end{document}
